@@ -1,0 +1,66 @@
+    *{
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    html{
+        height: 100%;
+        margin: 0;
+    }
+
+    body{
+        background-color: rgb(122, 122, 122);
+        background-image: url('../Webpic/page_wallpaper_\(Rimuru\).png');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    heading{
+        font-size: 5em;
+    }
+    heading>div>span>a>img{
+        width: 6%;
+        box-sizing: border-box;
+    }
+
+    .video {
+        position: absolute;
+        top: auto;
+        left: 15%;
+        
+    }
+    
+    .listcss{
+        background-color: rgb(122, 122, 122);
+        text-align: center;
+        font-size: 20px;
+        font-style: normal;
+        position: absolute;
+        top: auto;
+        right: 15%;
+        padding: 6px;
+    }
+    
+    select{
+        font-size: 20px;
+        font-style: normal;
+        background-color: cadetblue;
+    }
+
+
+    .text{
+        position: absolute;
+        height: inherit;
+        background-color: rgba(122, 122, 122, 0.4);
+        text-align: center;
+        margin-left: 1%;
+        box-sizing: border-box;
+    }
+
+
+    @media screen and (max-width:600px){
+        heading{
+            font-size:20px;
+            text-align:center;
+        }
+    }
