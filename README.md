@@ -1,6 +1,6 @@
 RIMURU's homepage:
 https://keynoscode.github.io/Web/homepage.html
 
-RIMURU's Anime Playlist:
-https://keynoscode.github.io/Web/anime%20playlist.html
+利姆露的動畫列表:
+https://keynoscode.github.io/Web/利姆露的動畫列表.html
 
