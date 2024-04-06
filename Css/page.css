@@ -12,21 +12,21 @@
         background-color: rgb(122, 122, 122);
         background-image: url('../Webpic/page_wallpaper_\(Rimuru\).png');
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100vw;
     }
 
     heading{
-        font-size: 5em;
+        font-size: 6.5vh;
     }
     heading>div>span>a>img{
-        width: 6%;
+        width: 9vh;
         box-sizing: border-box;
     }
 
     .video {
         position: absolute;
         top: auto;
-        left: 15%;
+        left: 10vh;
         
     }
     
@@ -42,7 +42,7 @@
     }
     
     select{
-        font-size: 20px;
+        font-size: 1.5vh;
         font-style: normal;
         background-color: cadetblue;
     }
