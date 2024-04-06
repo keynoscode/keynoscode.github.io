@@ -1,6 +1,5 @@
-RIMURU's homepage:
-https://keynoscode.github.io/Web/homepage.html
-
+利姆露的網路領域-首頁:
+https://keynoscode.github.io/Web/利姆露的網路領域-首頁.html
 利姆露的動畫列表:
 https://keynoscode.github.io/Web/利姆露的動畫列表.html
 
