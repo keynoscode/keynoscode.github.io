@@ -63,7 +63,7 @@
     }
 
 
-    @media screen and (max-width:400px){
+    @media screen and (max-width:600px){
         heading{
             font-size:2vh;
             text-align:left;
