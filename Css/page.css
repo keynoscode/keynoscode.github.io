@@ -56,11 +56,30 @@
         margin-left: 1%;
         box-sizing: border-box;
     }
+    
+    .video iframe{
+        width:48vw;
+        height: 44vh;
+    }
 
 
     @media screen and (max-width:600px){
         heading{
-            font-size:20px;
-            text-align:center;
+            font-size:2vh;
+            text-align:left;
+        }
+        heading>div>span>a>img{
+            width: 2.85vh;
+            box-sizing: border-box;
+        }
+        .video {
+            position: absolute;
+            top: auto;
+            left: 2.1vh;
+            
+        }
+        .video iframe{
+            width: 56vw;
+            height: 14vh;
         }
     }
