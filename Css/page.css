@@ -10,6 +10,7 @@ html{
 /*height set 100%*/
 
 body{
+    --height: 60px;  /*change*/
     background-color: rgb(122, 122, 122);
     background-image: url('../Webpic/page_wallpaper_\(Rimuru\).png');
     background-repeat: no-repeat; /*L*/
@@ -27,7 +28,7 @@ heading, content1{
 }
 
 heading{
-    height: 60px;  /*change*/
+    height: calc(var(--height));
     background-color: rgb(170, 225, 245);
 
 }
@@ -48,7 +49,7 @@ heading>span>a>img{
     max-height: 1.4em;
     background-color: rgba(122, 122, 122, 0.4);
     margin-left: 1%;
-    font-size: 2.2em;
+    font-size: calc(var(--height)*0.6);
 }
 
 /*Heading finish*/
@@ -89,11 +90,17 @@ select{
 */
 
 @media screen and (max-width:600px){
-
+    body{
+        background-color: rgb(235, 230, 90);
+        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru01\).png');
+        
+    }
 
     heading{
-        height: 40px;
-        font-size: 60%;
+        --height: 40px;
+    }
+    .text{
+        font-size: calc(var(--height)*0.54);
     }
 
     .video {
