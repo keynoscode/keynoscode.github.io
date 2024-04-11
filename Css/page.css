@@ -10,7 +10,7 @@ html{
 /*height set 100%*/
 
 body{
-    --height: 60px;  /*change*/
+    --height: 60px;  /*changed*/
     background-color: rgb(122, 122, 122);
     background-image: url('../Webpic/page_wallpaper_\(Rimuru\).png');
     background-repeat: no-repeat; /*L*/
