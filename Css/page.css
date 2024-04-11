@@ -29,7 +29,7 @@ heading, content1{
 
 heading{
     height: calc(var(--height));
-    background-color: rgb(170, 225, 245);
+    background-color: #AAE1F5;
 
 }
 
