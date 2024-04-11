@@ -30,7 +30,6 @@ heading, content1{
 heading{
     height: calc(var(--height));
     background-color: #AAE1F5;
-
 }
 
 heading>span{
