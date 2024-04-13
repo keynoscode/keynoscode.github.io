@@ -125,12 +125,9 @@ content1>span {
     box-sizing: border-box;
 }
 
-
-@media screen and (max-width:600px) {
+@media screen and (max-height: 500px) {
     body {
         background-color: rgb(235, 230, 90);
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru01\).png');
-
     }
 
     heading {
@@ -141,22 +138,18 @@ content1>span {
         width: 360px;
     }
 
-    content1>span {
-        display: block;
-    }
-
     .list {
-        margin-top: 40px;
-        margin-left: 0px;
         width: auto;
     }
 
     .text {
         line-height: 125%;
     }
+
+
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1000px) and (min-height: 1000px) {
     body {
         background-color: rgb(235, 230, 90);
         background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru01\).png');
@@ -189,9 +182,11 @@ content1>span {
     }
 }
 
-@media screen and (max-height: 1000px) {
+@media screen and (max-width:600px) {
     body {
         background-color: rgb(235, 230, 90);
+        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru01\).png');
+
     }
 
     heading {
@@ -202,13 +197,17 @@ content1>span {
         width: 360px;
     }
 
+    content1>span {
+        display: block;
+    }
+
     .list {
+        margin-top: 40px;
+        margin-left: 0px;
         width: auto;
     }
 
     .text {
         line-height: 125%;
     }
-
-
 }
