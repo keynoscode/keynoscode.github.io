@@ -146,6 +146,15 @@ content1>span {
         line-height: 125%;
     }
 
+    @keyframes typing {
+        from {
+            width: 0
+        }
+
+        to {
+            width: 232px
+        }
+    }
 
 }
 
@@ -209,5 +218,15 @@ content1>span {
 
     .text {
         line-height: 125%;
+    }
+
+    @keyframes typing {
+        from {
+            width: 0
+        }
+
+        to {
+            width: 232px
+        }
     }
 }
