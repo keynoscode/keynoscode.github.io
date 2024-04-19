@@ -4,6 +4,13 @@
 
 /*font family*/
 
+:root {
+    --height: 60px;
+    --pr: 5%;
+    --textw: 42px;
+    --pnl: 8;
+}
+
 html {
     height: 100%;
     margin: 0;
@@ -12,10 +19,11 @@ html {
 /*height set 100%*/
 
 body {
-    --height: 60px;
     /*changed*/
     background-color: rgb(122, 122, 122);
+    /*
     background-image: url('../Webpic/page_wallpaper_\(Rimuru\).png');
+    */
     background-repeat: no-repeat;
     /*L*/
     background-size: 100%;
@@ -26,7 +34,7 @@ body {
 /*background color and image and size*/
 
 heading {
-    height: calc(var(--height));
+    height: var(--height);
     padding: 5px;
     background-color: #AAE1F5;
 }
@@ -37,15 +45,14 @@ content1 {
     /*changed*/
     padding-left: 5%;
     /*changed*/
-    --trouble: calc(5%);
-    padding-right: calc(var(--trouble));
+    padding-right: var(--pr);
     box-sizing: border-box;
-    display: block;
+    display: inline-block;
     /*same as div*/
 }
 
 heading>span {
-    display: inline-block;
+    display: inherit;
     background-color: aqua;
     height: 100%;
     /*transform: translate(0%, 0%);*/
@@ -58,7 +65,6 @@ heading>span>a>img {
 .text {
     position: absolute;
     height: calc(var(--height) - 10px);
-    /*nec*/
     background-color: rgba(122, 122, 122, 0.4);
     margin-left: 1%;
     font-size: calc(var(--height)*0.65);
@@ -72,7 +78,8 @@ heading>span>a>img {
     overflow: hidden;
     animation:
         cursor .3s step-end infinite alternate,
-        typing 2s steps(8, end);
+        typing 2s steps(var(--pnl));
+    animation-delay: 0s;
 }
 
 @keyframes cursor {
@@ -87,7 +94,7 @@ heading>span>a>img {
     }
 
     to {
-        width: 336px
+        width: calc(var(--textw) * var(--pnl))
     }
 }
 
@@ -100,7 +107,7 @@ content1 {
 
 content1>span {
     display: inline-block;
-    background-color: rgb(176, 255, 157);
+    background-color: rgb(170, 255, 160);
 }
 
 .video {
@@ -113,21 +120,19 @@ content1>span {
     height: 100%;
 }
 
-.list {
+#list {
     position: absolute;
     text-align: center;
     font-size: 20px;
-    top: auto;
     margin-left: 3em;
-    margin-right: calc(var(--trouble));
-    right: auto;
-    width: auto;
+    margin-right: var(--pr);
     box-sizing: border-box;
 }
 
-@media screen and (max-height: 500px) {
+
+@media screen and (max-height: 600px) {
     body {
-        background-color: rgb(235, 230, 90);
+        background-color: rgb(245, 185, 170);
     }
 
     heading {
@@ -138,64 +143,23 @@ content1>span {
         width: 360px;
     }
 
-    .list {
+    #list {
         width: auto;
     }
 
     .text {
         line-height: 125%;
+        --textw: 29px;
     }
 
-    @keyframes typing {
-        from {
-            width: 0
-        }
-
-        to {
-            width: 232px
-        }
-    }
-
-}
-
-@media screen and (max-width: 1000px) and (min-height: 1000px) {
-    body {
-        background-color: rgb(235, 230, 90);
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru01\).png');
-    }
-
-    heading {
-        --height: 40px;
-    }
-
-    .video {
-        width: 360px;
-    }
-
-    .list {
-        width: auto;
-    }
-
-    .text {
-        line-height: 125%;
-    }
-
-    @keyframes typing {
-        from {
-            width: 0
-        }
-
-        to {
-            width: 232px
-        }
-    }
 }
 
 @media screen and (max-width:600px) {
     body {
-        background-color: rgb(235, 230, 90);
+        background-color: rgb(245, 185, 170);
+        /*
         background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru01\).png');
-
+        */
     }
 
     heading {
@@ -210,7 +174,7 @@ content1>span {
         display: block;
     }
 
-    .list {
+    #list {
         margin-top: 40px;
         margin-left: 0px;
         width: auto;
@@ -218,15 +182,34 @@ content1>span {
 
     .text {
         line-height: 125%;
+        --textw: 29px;
     }
 
-    @keyframes typing {
-        from {
-            width: 0
-        }
+}
 
-        to {
-            width: 232px
-        }
+@media screen and (max-width: 1000px) and (min-height: 1000px) {
+    body {
+        background-color: rgb(245, 185, 170);
+        /*
+        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru01\).png');
+        */
     }
+
+    heading {
+        --height: 40px;
+    }
+
+    .video {
+        width: 360px;
+    }
+
+    #list {
+        width: auto;
+    }
+
+    .text {
+        line-height: 125%;
+        --textw: 29px;
+    }
+
 }
