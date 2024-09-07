@@ -1,4 +1,4 @@
-document.getElementById("list").innerHTML = "網站仍在完善中 請等待31415年 謝謝 (所以這個網站31415年後會否嵌在AI大腦中)";
+document.getElementById("list").innerHTML = "網站仍在完善中 請等待314159265358979年";
 
 
 
