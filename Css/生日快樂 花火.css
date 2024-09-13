@@ -8,7 +8,6 @@
     --height: 60px;
     --pr: 5%;
     --textw: 42px;
-    --ptextw: 1.11em;
     --pnl: 8;
 }
 
@@ -23,7 +22,7 @@ body {
     /*changed*/
     background-color: rgb(122, 122, 122);
     background-position-y: (--height);
-    background-image: url('../Webpic/page_wallpaper_\(Rimuru03\).png');
+    background-image: url('../Webpic/page_wallpaper_\(Rimuru02\).png');
     
     background-repeat: no-repeat;
     /*L*/
@@ -80,7 +79,7 @@ heading>span>a>img {
     animation:
         cursor .45s step-end infinite alternate,
         typing 2.5s steps(var(--pnl)) forwards;
-    animation-delay: 2s;
+    animation-delay: 0s;
 }
 
 @keyframes cursor {
@@ -150,7 +149,7 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: var(--ptextw);
+        --textw: 29px;
     }
 
 }
@@ -183,7 +182,7 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: var(--ptextw);
+        --textw: 29px;
     }
 
 }
@@ -210,7 +209,7 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: var(--ptextw);
+        --textw: 29px;
     }
 
 }
