@@ -8,6 +8,7 @@
     --height: 60px;
     --pr: 5%;
     --textw: 42px;
+    --ptextw: 1.11em;
     --pnl: 8;
 }
 
@@ -22,7 +23,7 @@ body {
     /*changed*/
     background-color: rgb(122, 122, 122);
     background-position-y: (--height);
-    background-image: url('../Webpic/page_wallpaper_\(Rimuru02\).png');
+    background-image: url('../Webpic/page_wallpaper_\(Rimuru03\).png');
     
     background-repeat: no-repeat;
     /*L*/
@@ -79,7 +80,7 @@ heading>span>a>img {
     animation:
         cursor .45s step-end infinite alternate,
         typing 2.5s steps(var(--pnl)) forwards;
-    animation-delay: 0s;
+    animation-delay: 2s;
 }
 
 @keyframes cursor {
@@ -149,7 +150,7 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: 29px;
+        --textw: var(--ptextw);
     }
 
 }
@@ -158,7 +159,7 @@ content1>span {
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru06\).jpg');
+        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru05\).jpg');
         
     }
 
@@ -182,7 +183,7 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: 29px;
+        --textw: var(--ptextw);
     }
 
 }
@@ -191,7 +192,7 @@ content1>span {
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru06\).jpg');
+        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru05\).jpg');
         
     }
 
@@ -209,7 +210,7 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: 29px;
+        --textw: var(--ptextw);
     }
 
 }
