@@ -92,14 +92,15 @@ body {
     height: 0;
 }
 
-/* Particle styling */
+/* Particle styling with shiny effect */
 .particle {
     position: absolute;
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     background-color: #00aeff;
     border-radius: 50%;
-    animation: explode 1.5s ease-out forwards;
+    animation: explode 1.5s ease-out forwards, twinkle 0.5s infinite alternate; /* Add twinkle animation */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Initial glow */
 }
 
 @keyframes explode {
@@ -114,5 +115,14 @@ body {
     100% {
         opacity: 0;
         transform: translate(var(--x, 0rem), calc(var(--y, 0rem) + 5rem)) scale(0.5); /* Move downward */
+    }
+}
+
+@keyframes twinkle {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6); /* Bright glow */
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2); /* Dimmer glow */
     }
 }

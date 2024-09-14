@@ -23,7 +23,12 @@ function createFirework() {
 
 document.getElementById("firework-btn").addEventListener("click", createFirework);
 
+let cooldown = false;
+
 function createFirework() {
+    if (cooldown) return; // Prevent action if cooldown is active
+    cooldown = true; // Activate cooldown
+
     const numberOfParticles = 30; // Number of particles in the firework
     const fireworkContainer = document.createElement('div');
     fireworkContainer.classList.add('firework-container');
@@ -32,8 +37,8 @@ function createFirework() {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
-    const randomOffsetX = (Math.random() - 0.5) * window.innerWidth * 0.7; // 20% of screen width
-    const randomOffsetY = (Math.random() - 0.5) * window.innerHeight * 0.58; // 20% of screen height
+    const randomOffsetX = (Math.random() - 0.5) * window.innerWidth * 0.7; // 70% of screen width
+    const randomOffsetY = (Math.random() - 0.5) * window.innerHeight * 0.58; // 58% of screen height
 
     const x = centerX + randomOffsetX;
     const y = centerY + randomOffsetY;
@@ -67,4 +72,9 @@ function createFirework() {
     fireworkContainer.addEventListener('animationend', () => {
         fireworkContainer.remove();
     });
+
+    // Set a timeout to reset the cooldown flag after 0.6 seconds
+    setTimeout(() => {
+        cooldown = false;
+    }, 600); // milliseconds
 }
