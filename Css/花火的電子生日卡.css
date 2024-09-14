@@ -1,216 +1,42 @@
-* {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/*font family*/
-
-:root {
-    --height: 60px;
-    --pr: 5%;
-    --textw: 42px;
-    --ptextw: 1.08em;
-    --pnl: 8;
-}
-
-html {
-    height: 100%;
-    margin: 0;
-}
-
-/*height set 100%*/
-
 body {
-    /*changed*/
-    background-color: rgb(122, 122, 122);
-    background-position-y: (--height);
-    background-image: url('../Webpic/page_wallpaper_\(Rimuru03\).png');
-    
-    background-repeat: no-repeat;
-    /*L*/
-    background-size: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #222;
+    background-image: url('../Webpic/hanabi_computer_wallpaper_05.png');
+    background-size: cover;
+    background-position: center;
     margin: 0;
-    /*nec*/
+    font-family: 'Arial', sans-serif;
 }
 
-/*background color and image and size*/
-
-heading {
-    height: var(--height);
-    padding: 5px;
-    background-color: #AAE1F5;
+.message {
+    font-size: 6vw; /* Responsive text size */
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    padding: 10px 20px; /* Add padding around the text */
+    border-radius: 10px; /* Rounded corners for the background */
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out 1 forwards;
 }
 
-heading,
-content1 {
-    width: 100%;
-    /*changed*/
-    padding-left: 5%;
-    /*changed*/
-    padding-right: var(--pr);
-    box-sizing: border-box;
-    display: inline-block;
-    /*same as div*/
-}
-
-heading>span {
-    display: inherit;
-    background-color: aqua;
-    height: 100%;
-    /*transform: translate(0%, 0%);*/
-}
-
-heading>span>a>img {
-    height: 100%;
-}
-
-.text {
-    position: absolute;
-    height: calc(var(--height) - 10px);
-    background-color: rgba(122, 122, 122, 0.4);
-    margin-left: 1%;
-    font-size: calc(var(--height)*0.65);
-    line-height: 140%;
-}
-
-.text {
-    letter-spacing: 3px;
-    border-right: 2px solid;
-    white-space: nowrap;
-    overflow: hidden;
-    animation:
-        cursor .45s step-end infinite alternate,
-        typing 2.5s steps(var(--pnl)) forwards;
-    animation-delay: 2s;
-}
-
-@keyframes cursor {
-    50% {
-        border-color: transparent
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 
-@keyframes typing {
-    from {
-        width: 0;
-    }
-
-    to {
-        width: calc(var(--textw) * var(--pnl)); /* 动态设置宽度 */
-    }
-}
-
-/*Heading finish*/
-/*Content1 start*/
-
-content1 {
-    margin-top: 2em;
-}
-
-content1>span {
-    display: inline-block;
-    background-color: rgb(170, 255, 160);
-}
-
-.video {
-    aspect-ratio: 16 / 9;
-    width: 800px;
-}
-
-.video iframe {
-    width: 100%;
-    height: 100%;
-}
-
-#list {
-    position: absolute;
-    text-align: center;
-    font-size: 20px;
-    margin-left: 3em;
-    margin-right: var(--pr);
-    box-sizing: border-box;
-}
-
-
-@media screen and (max-height: 600px) {
+/* Media query for mobile devices */
+@media only screen and (max-width: 768px) {
     body {
-        background-color: rgb(245, 185, 170);
+        background-image: url('../Webpic/hanabi_phone_wallpaper_02.png');
     }
 
-    heading {
-        --height: 40px;
+    .message {
+        font-size: 8vw; /* Increase font size a bit for smaller screens */
     }
-
-    .video {
-        width: 320px;
-    }
-
-    #list {
-        width: auto;
-    }
-
-    .text {
-        line-height: 125%;
-        --textw: var(--ptextw);
-    }
-
-}
-
-@media screen and (max-width:600px) {
-    body {
-        background-color: rgb(245, 185, 170);
-        
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru05\).jpg');
-        
-    }
-
-    heading {
-        --height: 40px;
-    }
-
-    .video {
-        width: 320px;
-    }
-
-    content1>span {
-        display: block;
-    }
-
-    #list {
-        margin-top: 40px;
-        margin-left: 0px;
-        width: auto;
-    }
-
-    .text {
-        line-height: 125%;
-        --textw: var(--ptextw);
-    }
-
-}
-
-@media screen and (max-width: 1000px) and (min-height: 1000px) {
-    body {
-        background-color: rgb(245, 185, 170);
-        
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru05\).jpg');
-        
-    }
-
-    heading {
-        --height: 40px;
-    }
-
-    .video {
-        width: 360px;
-    }
-
-    #list {
-        width: auto;
-    }
-
-    .text {
-        line-height: 125%;
-        --textw: var(--ptextw);
-    }
-
 }
