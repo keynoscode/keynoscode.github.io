@@ -34,11 +34,11 @@ body {
 #firework-btn {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #ff4500;
+    background-color: #ff7300;
     border: none;
     color: white;
-    font-size: 1.5em;
-    border-radius: 5px;
+    font-size: 2.3em;
+    border-radius: 6px;
     cursor: pointer;
     animation: fadeIn 2s ease-in-out 1 forwards;
 }
@@ -65,6 +65,12 @@ body {
 }
 
 /* Media query for mobile devices */
+@media only screen and (max-height: 700px) {
+    #firework-btn {
+        font-size: 1.4em;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     body {
         background-image: url('../Webpic/hanabi_phone_wallpaper_02.png');

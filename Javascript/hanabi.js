@@ -32,8 +32,8 @@ function createFirework() {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
-    const randomOffsetX = (Math.random() - 0.5) * window.innerWidth * 0.8; // 20% of screen width
-    const randomOffsetY = (Math.random() - 0.5) * window.innerHeight * 0.6; // 20% of screen height
+    const randomOffsetX = (Math.random() - 0.5) * window.innerWidth * 0.7; // 20% of screen width
+    const randomOffsetY = (Math.random() - 0.5) * window.innerHeight * 0.58; // 20% of screen height
 
     const x = centerX + randomOffsetX;
     const y = centerY + randomOffsetY;
