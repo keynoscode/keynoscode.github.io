@@ -117,12 +117,13 @@ document.body.appendChild(background2);
 
 let activeBackground = 1; // Track which background is active
 
+// Modify the tooltip message
 document.getElementById("bg-change-btn").addEventListener("click", function() {
     if (!bgChangeInterval) {
         bgChangeInterval = setInterval(changeBackground, changeInterval * 1000); // Change every 'changeInterval' seconds
         this.textContent = "停止換背景";
-
-        // Show tooltip when background changes start
+        
+        // Show tooltip with the updated message and image
         showTooltip(`背景圖最大數量: ${totalImages}，背景每 ${changeInterval} 秒切換`);
     } else {
         clearInterval(bgChangeInterval);
@@ -164,12 +165,12 @@ function fadeBackground(newImage) {
 // Show tooltip with information
 function showTooltip(message) {
     const tooltip = document.getElementById('bg-info-tooltip');
-    tooltip.textContent = message;
+    tooltip.innerHTML = `${message} <img src="../Webpic/Sparkle/icon/02.png" alt="Icon" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 5px;">`;
     tooltip.style.visibility = 'visible';
     tooltip.style.opacity = 1;
 
-    // Automatically hide the tooltip after 5 seconds
-    setTimeout(hideTooltip, 5000);
+    // Automatically hide the tooltip after 6 seconds
+    setTimeout(hideTooltip, 6000);
 }
 
 // Hide tooltip
