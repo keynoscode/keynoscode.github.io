@@ -1,3 +1,10 @@
+:root {
+    --BFS: 2em;
+    /*button font size*/
+    --BgFS: 1.2em;
+    /*background button font size*/
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -48,11 +55,15 @@ body {
 
 
 .message {
-    font-size: 5vw; /* Responsive text size */
+    font-size: 5vw;
+    /* Responsive text size */
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-    padding: 10px 20px; /* Add padding around the text */
-    border-radius: 10px; /* Rounded corners for the background */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black background */
+    padding: 10px 20px;
+    /* Add padding around the text */
+    border-radius: 10px;
+    /* Rounded corners for the background */
     opacity: 0;
     animation: fadeIn 2s ease-in-out 1 forwards;
 }
@@ -61,43 +72,39 @@ body {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
 }
 
-:root{
-    --BFS:2em; /*button font size*/
-    --BgFS:1.2em; /*background button font size*/
+#firework-btn,
+#auto-firework-btn,
+#bg-change-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    animation: fadeIn 2s ease-in-out 1 forwards;
+    font-size: var(--BFS);
+    color: white;
 }
 
 
 #firework-btn {
     margin-top: 20px;
-    padding: 10px 20px;
     background-color: #ff7300;
-    border: none;
-    color: white;
-    font-size: var(--BFS);
-    border-radius: 6px;
-    cursor: pointer;
-    animation: fadeIn 2s ease-in-out 1 forwards;
     position: relative;
 }
 
 /* Automatically set off fireworks button */
 #auto-firework-btn {
-    margin-left: 10px; /* Space between the two buttons */
-    padding: 10px 20px;
+    margin-left: 10px;
+    /* Space between the two buttons */
     background-color: #28a745;
-    color: white;
-    font-size: var(--BFS);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    animation: fadeIn 2s ease-in-out 1 forwards;
     position: relative;
-    display: inline-block; /* Ensures buttons stay together */
+    display: inline-block;
+    /* Ensures buttons stay together */
 }
 
 #bg-change-btn {
@@ -105,20 +112,16 @@ body {
     bottom: 20px;
     right: 20px;
     background-color: #007bff;
-    padding: 10px 20px;
-    color: white;
     font-size: var(--BgFS);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    animation: fadeIn 2s ease-in-out 1 forwards;
 }
 
 /* Media query for mobile devices */
 @media only screen and (max-height: 700px) {
-    :root{
-        --BFS:1.4em; /*button font size*/
-        --BgFS:0.8em; /*background button font size*/
+    :root {
+        --BFS: 1.4em;
+        /*button font size*/
+        --BgFS: 0.8em;
+        /*background button font size*/
     }
 }
 
@@ -131,9 +134,11 @@ body {
         font-size: 8vw;
     }
 
-    :root{
-        --BFS:1.1em; /*button font size*/
-        --BgFS:0.9em; /*background button font size*/
+    :root {
+        --BFS: 1.1em;
+        /*button font size*/
+        --BgFS: 0.9em;
+        /*background button font size*/
     }
 }
 
@@ -151,8 +156,10 @@ pt {
     height: 8px;
     background-color: #00aeff;
     border-radius: 50%;
-    animation: explode 1.5s ease-out forwards, twinkle 0.5s infinite alternate; /* Add twinkle animation */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Initial glow */
+    animation: explode 1.5s ease-out forwards, twinkle 0.5s infinite alternate;
+    /* Add twinkle animation */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    /* Initial glow */
 }
 
 @keyframes explode {
@@ -160,21 +167,27 @@ pt {
         opacity: 1;
         transform: translate(0, 0) scale(1);
     }
+
     70% {
         opacity: 1;
         transform: translate(var(--x, 0rem), var(--y, 0rem)) scale(1);
     }
+
     100% {
         opacity: 0;
-        transform: translate(var(--x, 0rem), calc(var(--y, 0rem) + 5rem)) scale(0.5); /* Move downward */
+        transform: translate(var(--x, 0rem), calc(var(--y, 0rem) + 5rem)) scale(0.5);
+        /* Move downward */
     }
 }
 
 @keyframes twinkle {
     0% {
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6); /* Bright glow */
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+        /* Bright glow */
     }
+
     100% {
-        box-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2); /* Dimmer glow */
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
+        /* Dimmer glow */
     }
 }

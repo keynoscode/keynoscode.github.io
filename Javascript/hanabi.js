@@ -80,7 +80,7 @@ function createFirework() {
 let autoFireworkInterval;
 
 // Fireworks Auto-Set Button Behind the Main Button
-document.getElementById("auto-firework-btn").addEventListener("click", function() {
+document.getElementById("auto-firework-btn").addEventListener("click", function () {
     // Start setting off fireworks every second
     if (!autoFireworkInterval) {
         autoFireworkInterval = setInterval(createFirework, 500);
@@ -118,11 +118,11 @@ document.body.appendChild(background2);
 let activeBackground = 1; // Track which background is active
 
 // Modify the tooltip message
-document.getElementById("bg-change-btn").addEventListener("click", function() {
+document.getElementById("bg-change-btn").addEventListener("click", function () {
     if (!bgChangeInterval) {
         bgChangeInterval = setInterval(changeBackground, changeInterval * 1000); // Change every 'changeInterval' seconds
         this.textContent = "停止換背景";
-        
+
         // Show tooltip with the updated message and image
         showTooltip(`背景圖最大數量: ${totalImages}，背景每 ${changeInterval} 秒切換`);
     } else {
@@ -138,7 +138,7 @@ document.getElementById("bg-change-btn").addEventListener("click", function() {
 function changeBackground() {
     currentBackgroundIndex = (currentBackgroundIndex + 1) % totalImages;
 
-    const isMobile = window.innerWidth <= 768; 
+    const isMobile = window.innerWidth <= 768;
     const basePath = isMobile ? mobileBasePath : computerBasePath;
     const newBackground = `${basePath}${currentBackgroundIndex + 1}.png`;
 
@@ -169,8 +169,8 @@ function showTooltip(message) {
     tooltip.style.visibility = 'visible';
     tooltip.style.opacity = 1;
 
-    // Automatically hide the tooltip after 6 seconds
-    setTimeout(hideTooltip, 6000);
+    // Automatically hide the tooltip after 7 seconds
+    setTimeout(hideTooltip, 7000);
 }
 
 // Hide tooltip
