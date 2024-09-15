@@ -173,3 +173,11 @@ function hideTooltip() {
         tooltip.style.visibility = 'hidden';
     }, 500); // Wait for fade-out to complete
 }
+
+function fadeInBackground(imageUrl) {
+    const body = document.body;
+    body.style.transition = "background-image 0.7s ease-in-out"; // 0.7秒淡入效果
+    body.style.backgroundImage = `url('${imageUrl}')`;
+    body.style.backgroundSize = "cover"; // Ensure the background covers the whole screen
+    body.style.backgroundPosition = "center";
+}

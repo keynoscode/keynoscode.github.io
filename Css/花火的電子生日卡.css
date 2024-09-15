@@ -10,7 +10,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: calc(var(--vh, 1vh) * 100); /* Uses the dynamically calculated height */
+    height: calc(var(--vh, 1vh) * 100);
+    /* Uses the dynamically calculated height */
     background-color: #222;
     background-image: url('../Webpic/Sparkle/computer_background/1.png');
     background-size: cover;
@@ -37,21 +38,6 @@ body {
     opacity: 0;
 }
 
-/* Tooltip styling */
-#bg-info-tooltip {
-    position: absolute;
-    bottom: 60px;
-    right: 20px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: var(--BgFS);
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    z-index: 1;
-}
 
 
 .message {
@@ -108,11 +94,31 @@ body {
 }
 
 #bg-change-btn {
+    /* This ensures the background covers the visible screen, including after address bar hides */
+    background-size: 100% calc(var(--vh, 1vh) * 100);
+    background-repeat: no-repeat;
+    background-position: center;
     position: absolute;
     bottom: 20px;
     right: 20px;
     background-color: #007bff;
     font-size: var(--BgFS);
+}
+
+/* Tooltip styling */
+#bg-info-tooltip {
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: var(--BgFS);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 1;
 }
 
 /* Media query for mobile devices */
