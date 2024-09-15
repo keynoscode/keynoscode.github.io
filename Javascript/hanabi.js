@@ -1,4 +1,4 @@
-document.getElementById("firework-btn").addEventListener("click", createFirework);
+/*document.getElementById("firework-btn").addEventListener("click", createFirework);
 
 function createFirework() {
     // Create a firework div element
@@ -19,7 +19,7 @@ function createFirework() {
     firework.addEventListener('animationend', () => {
         firework.remove();
     });
-}
+}*/
 
 document.getElementById("firework-btn").addEventListener("click", createFirework);
 
@@ -29,16 +29,15 @@ function createFirework() {
     if (cooldown) return; // Prevent action if cooldown is active
     cooldown = true; // Activate cooldown
 
-    const numberOfParticles = 31; // Number of particles in the firework
-    const fireworkContainer = document.createElement('div');
-    fireworkContainer.classList.add('firework-container');
+    const numberOfParticles = 30; // Number of particles in the firework
+    const fireworkContainer = document.createElement('d');
 
     // Set a controlled random initial position close to the center of the screen
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
     const randomOffsetX = (Math.random() - 0.5) * window.innerWidth * 0.7; // 70% of screen width
-    const randomOffsetY = (Math.random() - 0.5) * window.innerHeight * 0.58; // 58% of screen height
+    const randomOffsetY = (Math.random() - 0.5) * window.innerHeight * 0.6; // 60% of screen height
 
     const x = centerX + randomOffsetX;
     const y = centerY + randomOffsetY;
@@ -48,8 +47,7 @@ function createFirework() {
 
     // Create multiple particles
     for (let i = 0; i < numberOfParticles; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
+        const particle = document.createElement('pt');
         fireworkContainer.appendChild(particle);
 
         // Random angle and velocity for each particle
@@ -73,14 +71,13 @@ function createFirework() {
         fireworkContainer.remove();
     });
 
-    // Set a timeout to reset the cooldown flag after 0.45 seconds
+    // Set a timeout to reset the cooldown flag after 0.5 seconds
     setTimeout(() => {
         cooldown = false;
-    }, 450); // milliseconds
+    }, 500); // milliseconds
 }
 
 let autoFireworkInterval;
-let bgChangeInterval;
 
 // Fireworks Auto-Set Button Behind the Main Button
 document.getElementById("auto-firework-btn").addEventListener("click", function() {
@@ -95,18 +92,18 @@ document.getElementById("auto-firework-btn").addEventListener("click", function(
     }
 });
 
-// Background Change Button
-const backgroundImages = [
-    '../Webpic/hanabi_computer_wallpaper_01.png',
-    '../Webpic/hanabi_computer_wallpaper_02.png',
-    '../Webpic/hanabi_computer_wallpaper_03.png' // Add more images as needed
-];
-
 let currentBackgroundIndex = 0;
+let bgChangeInterval;
 
+// 背景图路径的通用部分（电脑和手机）
+const computerBasePath = "../Webpic/Sparkle/computer_background/";
+const mobileBasePath = "../Webpic/Sparkle/phone_background/";
+const totalImages = 30; 
+
+// 监听「換背景」按钮点击事件
 document.getElementById("bg-change-btn").addEventListener("click", function() {
     if (!bgChangeInterval) {
-        bgChangeInterval = setInterval(changeBackground, 4000); // 4 seconds
+        bgChangeInterval = setInterval(changeBackground, 4000); // 每4秒切换一次
         this.textContent = "停止換背景";
     } else {
         clearInterval(bgChangeInterval);
@@ -115,8 +112,20 @@ document.getElementById("bg-change-btn").addEventListener("click", function() {
     }
 });
 
-function changeBackground() {
-    currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
-    document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`;
+// 淡入动画效果
+function fadeInBackground(imageUrl) {
+    const body = document.body;
+    body.style.transition = "background-image 0.7s ease-in-out"; // 0.7秒淡入效果
+    body.style.backgroundImage = `url('${imageUrl}')`;
 }
 
+function changeBackground() {
+    currentBackgroundIndex = (currentBackgroundIndex + 1) % totalImages;
+
+    // 检查是手机还是电脑，并设置相应的背景图
+    const isMobile = window.innerWidth <= 768; // 如果宽度小于等于768px，则判断为手机
+    const basePath = isMobile ? mobileBasePath : computerBasePath;
+    const newBackground = `${basePath}${currentBackgroundIndex + 1}.png`;
+
+    fadeInBackground(newBackground);
+}

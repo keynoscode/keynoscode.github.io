@@ -5,7 +5,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #222;
-    background-image: url('../Webpic/hanabi_computer_wallpaper_05.png');
+    background-image: url('../Webpic/Sparkle/computer_background/1.png');
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -13,7 +13,7 @@ body {
 }
 
 .message {
-    font-size: 6vw; /* Responsive text size */
+    font-size: 5vw; /* Responsive text size */
     color: #fff;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
     padding: 10px 20px; /* Add padding around the text */
@@ -32,8 +32,8 @@ body {
 }
 
 :root{
-    --BFS:2.3em; /*button font size*/
-    --BgFS:1.5em; /*background button font size*/
+    --BFS:2em; /*button font size*/
+    --BgFS:1.2em; /*background button font size*/
 }
 
 
@@ -79,27 +79,6 @@ body {
     animation: fadeIn 2s ease-in-out 1 forwards;
 }
 
-/* Style fireworks (hidden by default) */
-.firework {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ff4500;
-    animation: firework-animation 1s ease-in-out forwards;
-}
-
-@keyframes firework-animation {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(10);
-    }
-}
-
 /* Media query for mobile devices */
 @media only screen and (max-height: 700px) {
     :root{
@@ -110,7 +89,7 @@ body {
 
 @media only screen and (max-width: 768px) {
     body {
-        background-image: url('../Webpic/hanabi_phone_wallpaper_02.png');
+        background-image: url('../Webpic/Sparkle/phone_background/1.png');
     }
 
     .message {
@@ -124,14 +103,14 @@ body {
 }
 
 /* Firework container */
-.firework-container {
+d {
     position: absolute;
     width: 0;
     height: 0;
 }
 
 /* Particle styling with shiny effect */
-.particle {
+pt {
     position: absolute;
     width: 8px;
     height: 8px;
