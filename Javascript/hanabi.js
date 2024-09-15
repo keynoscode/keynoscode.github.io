@@ -95,37 +95,88 @@ document.getElementById("auto-firework-btn").addEventListener("click", function(
 let currentBackgroundIndex = 0;
 let bgChangeInterval;
 
-// 背景图路径的通用部分（电脑和手机）
 const computerBasePath = "../Webpic/Sparkle/computer_background/";
 const mobileBasePath = "../Webpic/Sparkle/phone_background/";
-const totalImages = 30; 
+const totalImages = 30;
+const changeInterval = 4; // Interval in seconds between background changes
 
-// 监听「換背景」按钮点击事件
+// Tooltip element for background information
+const bgInfoTooltip = document.createElement('div');
+bgInfoTooltip.id = 'bg-info-tooltip';
+document.body.appendChild(bgInfoTooltip);
+
+// Background layers
+
+const background1 = document.createElement('b1');
+background1.id = 'background1';
+document.body.appendChild(background1);
+
+const background2 = document.createElement('b2');
+background2.id = 'background2';
+document.body.appendChild(background2);
+
+let activeBackground = 1; // Track which background is active
+
 document.getElementById("bg-change-btn").addEventListener("click", function() {
     if (!bgChangeInterval) {
-        bgChangeInterval = setInterval(changeBackground, 4000); // 每4秒切换一次
+        bgChangeInterval = setInterval(changeBackground, changeInterval * 1000); // Change every 'changeInterval' seconds
         this.textContent = "停止換背景";
+
+        // Show tooltip when background changes start
+        showTooltip(`背景圖最大數量: ${totalImages}，背景每 ${changeInterval} 秒切換`);
     } else {
         clearInterval(bgChangeInterval);
         bgChangeInterval = null;
         this.textContent = "換背景";
+
+        // Hide tooltip when stopping the background change
+        hideTooltip();
     }
 });
-
-// 淡入动画效果
-function fadeInBackground(imageUrl) {
-    const body = document.body;
-    body.style.transition = "background-image 0.7s ease-in-out"; // 0.7秒淡入效果
-    body.style.backgroundImage = `url('${imageUrl}')`;
-}
 
 function changeBackground() {
     currentBackgroundIndex = (currentBackgroundIndex + 1) % totalImages;
 
-    // 检查是手机还是电脑，并设置相应的背景图
-    const isMobile = window.innerWidth <= 768; // 如果宽度小于等于768px，则判断为手机
+    const isMobile = window.innerWidth <= 768; 
     const basePath = isMobile ? mobileBasePath : computerBasePath;
     const newBackground = `${basePath}${currentBackgroundIndex + 1}.png`;
 
-    fadeInBackground(newBackground);
+    fadeBackground(newBackground);
+}
+
+function fadeBackground(newImage) {
+    const bg1 = document.getElementById('background1');
+    const bg2 = document.getElementById('background2');
+
+    if (activeBackground === 1) {
+        bg2.style.backgroundImage = `url('${newImage}')`;
+        bg2.style.opacity = 1; // Fade in background2
+        bg1.style.opacity = 0; // Fade out background1
+        activeBackground = 2; // Switch active background
+    } else {
+        bg1.style.backgroundImage = `url('${newImage}')`;
+        bg1.style.opacity = 1; // Fade in background1
+        bg2.style.opacity = 0; // Fade out background2
+        activeBackground = 1; // Switch active background
+    }
+}
+
+// Show tooltip with information
+function showTooltip(message) {
+    const tooltip = document.getElementById('bg-info-tooltip');
+    tooltip.textContent = message;
+    tooltip.style.visibility = 'visible';
+    tooltip.style.opacity = 1;
+
+    // Automatically hide the tooltip after 5 seconds
+    setTimeout(hideTooltip, 5000);
+}
+
+// Hide tooltip
+function hideTooltip() {
+    const tooltip = document.getElementById('bg-info-tooltip');
+    tooltip.style.opacity = 0;
+    setTimeout(() => {
+        tooltip.style.visibility = 'hidden';
+    }, 500); // Wait for fade-out to complete
 }
