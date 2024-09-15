@@ -31,14 +31,50 @@ body {
     }
 }
 
+:root{
+    --BFS:2.3em; /*button font size*/
+    --BgFS:1.5em; /*background button font size*/
+}
+
+
 #firework-btn {
     margin-top: 20px;
     padding: 10px 20px;
     background-color: #ff7300;
     border: none;
     color: white;
-    font-size: 2.3em;
+    font-size: var(--BFS);
     border-radius: 6px;
+    cursor: pointer;
+    animation: fadeIn 2s ease-in-out 1 forwards;
+    position: relative;
+}
+
+/* Automatically set off fireworks button */
+#auto-firework-btn {
+    margin-left: 10px; /* Space between the two buttons */
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    font-size: var(--BFS);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    animation: fadeIn 2s ease-in-out 1 forwards;
+    position: relative;
+    display: inline-block; /* Ensures buttons stay together */
+}
+
+#bg-change-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    padding: 10px 20px;
+    color: white;
+    font-size: var(--BgFS);
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
     animation: fadeIn 2s ease-in-out 1 forwards;
 }
@@ -66,8 +102,9 @@ body {
 
 /* Media query for mobile devices */
 @media only screen and (max-height: 700px) {
-    #firework-btn {
-        font-size: 1.4em;
+    :root{
+        --BFS:1.4em; /*button font size*/
+        --BgFS:0.8em; /*background button font size*/
     }
 }
 
@@ -80,8 +117,9 @@ body {
         font-size: 8vw;
     }
 
-    #firework-btn {
-        font-size: 1.4em;
+    :root{
+        --BFS:1.1em; /*button font size*/
+        --BgFS:0.9em; /*background button font size*/
     }
 }
 

@@ -29,7 +29,7 @@ function createFirework() {
     if (cooldown) return; // Prevent action if cooldown is active
     cooldown = true; // Activate cooldown
 
-    const numberOfParticles = 30; // Number of particles in the firework
+    const numberOfParticles = 31; // Number of particles in the firework
     const fireworkContainer = document.createElement('div');
     fireworkContainer.classList.add('firework-container');
 
@@ -73,8 +73,50 @@ function createFirework() {
         fireworkContainer.remove();
     });
 
-    // Set a timeout to reset the cooldown flag after 0.6 seconds
+    // Set a timeout to reset the cooldown flag after 0.45 seconds
     setTimeout(() => {
         cooldown = false;
-    }, 600); // milliseconds
+    }, 450); // milliseconds
 }
+
+let autoFireworkInterval;
+let bgChangeInterval;
+
+// Fireworks Auto-Set Button Behind the Main Button
+document.getElementById("auto-firework-btn").addEventListener("click", function() {
+    // Start setting off fireworks every second
+    if (!autoFireworkInterval) {
+        autoFireworkInterval = setInterval(createFirework, 500);
+        this.textContent = "停止自動歡愉";
+    } else {
+        clearInterval(autoFireworkInterval);
+        autoFireworkInterval = null;
+        this.textContent = "自動歡愉";
+    }
+});
+
+// Background Change Button
+const backgroundImages = [
+    '../Webpic/hanabi_computer_wallpaper_01.png',
+    '../Webpic/hanabi_computer_wallpaper_02.png',
+    '../Webpic/hanabi_computer_wallpaper_03.png' // Add more images as needed
+];
+
+let currentBackgroundIndex = 0;
+
+document.getElementById("bg-change-btn").addEventListener("click", function() {
+    if (!bgChangeInterval) {
+        bgChangeInterval = setInterval(changeBackground, 4000); // 4 seconds
+        this.textContent = "停止換背景";
+    } else {
+        clearInterval(bgChangeInterval);
+        bgChangeInterval = null;
+        this.textContent = "換背景";
+    }
+});
+
+function changeBackground() {
+    currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+    document.body.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`;
+}
+
