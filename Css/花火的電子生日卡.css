@@ -10,7 +10,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100); /* Uses the dynamically calculated height */
     background-color: #222;
     background-image: url('../Webpic/Sparkle/computer_background/1.png');
     background-size: cover;

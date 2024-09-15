@@ -1,25 +1,17 @@
-/*document.getElementById("firework-btn").addEventListener("click", createFirework);
+// To fix the annoying address bar resize problem
+function updateVH() {
+    // Get the actual viewport height
+    const vh = window.innerHeight * 0.01;
+    // Set a custom property '--vh' to the root element (used in CSS)
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
 
-function createFirework() {
-    // Create a firework div element
-    const firework = document.createElement('div');
-    firework.classList.add('firework');
-    
-    // Set random position for the firework
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight;
+// Run this function on page load
+updateVH();
 
-    firework.style.left = `${x}px`;
-    firework.style.top = `${y}px`;
-
-    // Append to the body
-    document.body.appendChild(firework);
-
-    // Remove the firework element after the animation ends
-    firework.addEventListener('animationend', () => {
-        firework.remove();
-    });
-}*/
+// Recalculate the viewport height on window resize (to handle orientation change, etc.)
+window.addEventListener('resize', updateVH);
+//----------------------------------
 
 document.getElementById("firework-btn").addEventListener("click", createFirework);
 
