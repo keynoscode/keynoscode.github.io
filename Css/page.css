@@ -10,6 +10,7 @@
     --textw: 42px;
     --ptextw: 1.08em;
     --pnl: 8;
+    --dc: 300px;
 }
 
 html {
@@ -121,6 +122,17 @@ content1>span {
     height: 100%;
 }
 
+.dc {
+    aspect-ratio: 2 / 3;
+    width: var(--dc);
+    margin: 0 2.71% 2.71% 0;
+}
+
+.dc iframe {
+    width: 100%;
+    height: 100%;
+}
+
 #list {
     position: absolute;
     text-align: center;
@@ -132,13 +144,21 @@ content1>span {
 
 
 @media screen and (max-height: 600px) {
+    :root{
+        --dc: 220px;
+        --height: 40px;
+        --textw: var(--ptextw);
+    }
+
     body {
         background-color: rgb(245, 185, 170);
     }
 
+/*
     heading {
         --height: 40px;
     }
+*/
 
     .video {
         width: 320px;
@@ -150,22 +170,28 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: var(--ptextw);
     }
 
 }
 
 @media screen and (max-width:600px) {
+    
+    :root{
+        --dc: 220px;
+        --height: 40px;
+        --textw: var(--ptextw);
+    }
+
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru05\).jpg');
+        background-image: url('../Webpic/Rimuru/phone_background/004.png');
         
     }
 
-    heading {
+    /* heading {
         --height: 40px;
-    }
+    } */
 
     .video {
         width: 320px;
@@ -183,7 +209,6 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: var(--ptextw);
     }
 
 }
@@ -192,7 +217,7 @@ content1>span {
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('../Webpic/page_phone_wallpaper_\(Rimuru05\).jpg');
+        background-image: url('../Webpic/Rimuru/phone_background/004.png');
         
     }
 

@@ -9,6 +9,15 @@ const text = window.getComputedStyle();
 const tw= text.getPropertyValue('--textw')
 */
 
+/*
+document.getElementsByClassName("icon")[0].innerHTML += desiredText.link('../Web/利姆露的網路領域-首頁.html');
+*/
+
+
+
+
+
+
 console.log("JavaScript 已加載");
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -26,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function() {
      console.error("未能找到元素 .text");
  }
 });
+
+
+
 
 
 
