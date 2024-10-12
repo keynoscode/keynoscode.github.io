@@ -7,9 +7,9 @@
 :root {
     --height: 60px;
     --pr: 5%;
-    --textw: 42px;
-    --ptextw: 1.08em;
-    --pnl: 8;
+    --textw: 1.08em; /*heading width default depnds on text width*/
+    --ptextw: 1.11em; /*heading text width for phone*/
+    --pnl: 0; /*the num of the heading text*/
     --dc: 300px;
 }
 
@@ -24,7 +24,8 @@ body {
     /*changed*/
     background-color: rgb(122, 122, 122);
     background-position-y: (--height);
-    background-image: url('../Webpic/Rimuru/computer_background/11.png');
+    background-size: cover;
+    background-image: url('../Webpic/Rimuru/computer_background/10.png');
     
     background-repeat: no-repeat;
     /*L*/
@@ -44,9 +45,7 @@ heading {
 heading,
 content1 {
     width: 100%;
-    /*changed*/
-    padding-left: 5%;
-    /*changed*/
+    padding-left: 2%; /*Left original position*/
     padding-right: var(--pr);
     box-sizing: border-box;
     display: inline-block;
@@ -68,7 +67,7 @@ heading>span>a>img {
     position: absolute;
     height: calc(var(--height) - 10px);
     background-color: rgba(122, 122, 122, 0.4);
-    margin-left: 1%;
+    margin-left: 1vw;
     font-size: calc(var(--height)*0.65);
     line-height: 140%;
 }
@@ -79,9 +78,9 @@ heading>span>a>img {
     white-space: nowrap;
     overflow: hidden;
     animation:
-        cursor .45s step-end infinite alternate,
+        cursor .5s step-end infinite alternate,
         typing 2.5s steps(var(--pnl)) forwards;
-    animation-delay: 2s;
+    animation-delay: 4s;
 }
 
 @keyframes cursor {
@@ -104,7 +103,7 @@ heading>span>a>img {
 /*Content1 start*/
 
 content1 {
-    margin-top: 2em;
+    margin-top: 2vh;
 }
 
 content1>span {
@@ -137,7 +136,7 @@ content1>span {
     position: absolute;
     text-align: center;
     font-size: 20px;
-    margin-left: 3em;
+    margin-left: 2vw;
     margin-right: var(--pr);
     box-sizing: border-box;
 }
@@ -214,15 +213,17 @@ content1>span {
 }
 
 @media screen and (max-width: 1000px) and (min-height: 1000px) {
+    :root{
+        --dc: 220px;
+        --height: 40px;
+        --textw: var(--ptextw);
+    }
+
     body {
         background-color: rgb(245, 185, 170);
         
         background-image: url('../Webpic/Rimuru/phone_background/004.png');
         
-    }
-
-    heading {
-        --height: 40px;
     }
 
     .video {
@@ -235,7 +236,6 @@ content1>span {
 
     .text {
         line-height: 125%;
-        --textw: var(--ptextw);
     }
 
 }
