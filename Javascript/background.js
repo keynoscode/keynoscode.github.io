@@ -75,16 +75,23 @@ function fadeBackground(newImage) {
 
     if (activeBackground === 1) {
         bg2.style.backgroundImage = `url('${newImage}')`;
-        bg2.style.opacity = 1; // Fade in background2
-        bg1.style.opacity = 0; // Fade out background1
-        activeBackground = 2; // Switch active background
+        bg2.style.opacity = 1; // Start fading in background2
+
+        setTimeout(() => {
+            bg1.style.opacity = 0; // Fade out background1 after background2 has started fading in
+        }, 100); // Delay to avoid showing the base background
+        activeBackground = 2;
     } else {
         bg1.style.backgroundImage = `url('${newImage}')`;
-        bg1.style.opacity = 1; // Fade in background1
-        bg2.style.opacity = 0; // Fade out background2
-        activeBackground = 1; // Switch active background
+        bg1.style.opacity = 1; // Start fading in background1
+
+        setTimeout(() => {
+            bg2.style.opacity = 0; // Fade out background2 after background1 has started fading in
+        }, 100); // Delay to avoid showing the base background
+        activeBackground = 1;
     }
 }
+
 
 // Show tooltip with information
 function showTooltip(message) {
