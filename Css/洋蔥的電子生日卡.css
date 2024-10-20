@@ -1,0 +1,175 @@
+:root {
+    --BFS: 2em;
+    --BgFS: 1.2em;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(var(--vh, 1vh) * 100);
+    background-color: #222;
+    background-image: url('../Webpic/Onion\,\ coffee/computer_background/01.png');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+#background1,
+#background2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.7s ease-in-out;
+    z-index: -1;
+    opacity: 1;
+}
+
+#background2 {
+    opacity: 0;
+}
+
+.message {
+    font-size: 5vw;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out 1 forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#firework-btn,
+#auto-firework-btn,
+#bg-change-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    animation: fadeIn 2s ease-in-out 1 forwards;
+    font-size: var(--BFS);
+    color: white;
+}
+
+
+#firework-btn {
+    margin-top: 20px;
+    background-color: #ff7300;
+    position: relative;
+}
+
+#auto-firework-btn {
+    margin-left: 10px;
+    /* Space between the two buttons */
+    background-color: #28a745;
+    position: relative;
+    display: inline-block;
+    /* Ensures buttons stay together */
+}
+
+#bg-change-btn {
+    background-size: 100% calc(var(--vh, 1vh) * 100);
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    font-size: var(--BgFS);
+}
+
+#bg-info-tooltip {
+    position: absolute;
+    bottom: 60px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: var(--BgFS);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 1;
+}
+
+@media only screen and (max-height: 700px) {
+    :root {
+        --BFS: 1.4em;
+        --BgFS: 0.8em;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    body {
+        background-image: url('../Webpic/Onion\,\ coffee/phone_background/01.png');
+    }
+
+    .message {
+        font-size: 8vw;
+    }
+
+    :root {
+        --BFS: 1.1em;
+        --BgFS: 0.9em;
+    }
+}
+
+d {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+pt {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #00aeff;
+    border-radius: 50%;
+    animation: explode 1.5s ease-out forwards, twinkle 0.5s infinite alternate;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes explode {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translate(var(--x, 0rem), var(--y, 0rem)) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(var(--x, 0rem), calc(var(--y, 0rem) + 5rem)) scale(0.5);
+    }
+}
+
+@keyframes twinkle {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+}
