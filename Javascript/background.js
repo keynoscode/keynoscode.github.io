@@ -19,7 +19,7 @@ let bgChangeInterval;
 const computerBasePath = "../Webpic/Sparkle/computer_background/";
 const mobileBasePath = "../Webpic/Sparkle/phone_background/";
 const totalImages = 30;
-const changeInterval = 4; // Interval in seconds between background changes
+const changeInterval = 5.3; // Interval in seconds between background changes
 
 // Tooltip element for background information
 const bgInfoTooltip = document.createElement('div');
@@ -43,7 +43,7 @@ let activeBackground = 1; // Track which background is active
 // Modify the tooltip message
 document.getElementById("bg-change-btn").addEventListener("click", function () {
     if (!bgChangeInterval) {
-        bgChangeInterval = setInterval(changeBackground, changeInterval * 1000); // Change every 'changeInterval' seconds
+        bgChangeInterval = setInterval(changeBackground, changeInterval * 1500); // Change every 'changeInterval' seconds
         this.textContent = "停止換背景";
 
         // Show tooltip with the updated message and image
