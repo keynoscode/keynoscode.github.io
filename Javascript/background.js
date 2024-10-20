@@ -59,14 +59,22 @@ document.getElementById("bg-change-btn").addEventListener("click", function () {
 });
 //------------------------------------------------------------------------------------------------------
 // background change (issue: As background fade in and out, sometime it will show the base background, and especially when it lagging)
+function preloadImage(url, callback) {
+    const img = new Image();
+    img.src = url;
+    img.onload = callback; // Once the image is loaded, proceed with the transition
+}
+
 function changeBackground() {
     currentBackgroundIndex = (currentBackgroundIndex + 1) % totalImages;
-
     const isMobile = window.innerWidth <= 768;
     const basePath = isMobile ? mobileBasePath : computerBasePath;
     const newBackground = `${basePath}${currentBackgroundIndex + 1}.png`;
 
-    fadeBackground(newBackground);
+    // Preload the new background before starting the fade
+    preloadImage(newBackground, () => {
+        fadeBackground(newBackground);
+    });
 }
 
 function fadeBackground(newImage) {
@@ -92,6 +100,15 @@ function fadeBackground(newImage) {
     }
 }
 
+function fadeInBackground(imageUrl) {
+    const body = document.body;
+    body.style.transition = "background-image 0.7s ease-in-out"; // 0.7秒淡入效果
+    body.style.backgroundImage = `url('${imageUrl}')`;
+    body.style.backgroundSize = "cover"; // Ensure the background covers the whole screen
+    body.style.backgroundPosition = "center";
+}
+
+
 
 // Show tooltip with information
 function showTooltip(message) {
@@ -111,12 +128,4 @@ function hideTooltip() {
     setTimeout(() => {
         tooltip.style.visibility = 'hidden';
     }, 500); // Wait for fade-out to complete
-}
-
-function fadeInBackground(imageUrl) {
-    const body = document.body;
-    body.style.transition = "background-image 0.7s ease-in-out"; // 0.7秒淡入效果
-    body.style.backgroundImage = `url('${imageUrl}')`;
-    body.style.backgroundSize = "cover"; // Ensure the background covers the whole screen
-    body.style.backgroundPosition = "center";
 }
