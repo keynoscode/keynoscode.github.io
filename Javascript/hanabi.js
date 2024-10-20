@@ -1,16 +1,17 @@
 // To fix the annoying address bar resize problem
-function setViewportHeight() {
-    let vh = window.innerHeight * 0.01; 
+function updateVH() {
+    // Get the actual viewport height
+    const vh = window.innerHeight * 0.01;
+    // Set a custom property '--vh' to the root element (used in CSS)
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    
-    // Set background size dynamically to account for the height change
-    document.body.style.backgroundSize = `100% calc(var(--vh) * 100)`; 
 }
 
-// Call this function on page load and window resize
-window.addEventListener('resize', setViewportHeight);
-window.addEventListener('orientationchange', setViewportHeight);
-setViewportHeight();
+// Run this function on page load
+updateVH();
+
+// Recalculate the viewport height on window resize (to handle orientation change, etc.)
+window.addEventListener('resize', updateVH);
+//----------------------------------
 
 document.getElementById("firework-btn").addEventListener("click", createFirework);
 
