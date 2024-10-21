@@ -68,7 +68,8 @@ body {
 
 #firework-btn,
 #auto-firework-btn,
-#bg-change-btn {
+#bg-change-btn,
+#background-source {
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
@@ -95,7 +96,7 @@ body {
     /* Ensures buttons stay together */
 }
 
-#bg-change-btn {
+#bg-change-btn, #background-source {
     /* This ensures the background covers the visible screen, including after address bar hides */
     background-size: 100% calc(var(--vh, 1vh) * 100);
     background-repeat: no-repeat;
@@ -105,6 +106,15 @@ body {
     right: 20px;
     background-color: #007bff;
     font-size: var(--BgFS);
+}
+
+#bg-change-btn{
+    right: 160px;
+}
+
+#background-source {
+    border: 1px solid #0175f1;
+    cursor: pointer;
 }
 
 /* Tooltip styling */
@@ -134,6 +144,8 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
+    
+
     body {
         background-image: url('../Webpic/Sparkle/phone_background/1.png');
     }

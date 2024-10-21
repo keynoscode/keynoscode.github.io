@@ -16,10 +16,18 @@ window.addEventListener('resize', updateVH);
 let currentBackgroundIndex = 0;
 let bgChangeInterval;
 
-const computerBasePath = "../Webpic/Sparkle/computer_background/";
-const mobileBasePath = "../Webpic/Sparkle/phone_background/";
+let basePath = "../Webpic/Sparkle/computer_background/";
+let mobileBasePath = "../Webpic/Sparkle/phone_background/";
+let iconBasePath = "../Webpic/Sparkle/icon/";
 const totalImages = 30;
-const changeInterval = 6; // Interval in seconds between background changes
+const changeInterval = 5; // Interval in seconds between background changes
+
+// Add an event listener to the dropdown menu
+document.getElementById('background-source').addEventListener('change', function () {
+    basePath = this.value; // Set desktop base path
+    mobileBasePath = this.value.replace('computer_background', 'phone_background'); // Set mobile base path
+    iconBasePath = this.value.replace('computer_background', 'icon'); // Set the icon path dynamically
+});
 
 // Tooltip element for background information
 const bgInfoTooltip = document.createElement('div');
@@ -58,7 +66,7 @@ document.getElementById("bg-change-btn").addEventListener("click", function () {
     }
 });
 //------------------------------------------------------------------------------------------------------
-// background change (issue: As background fade in and out, sometime it will show the base background, and especially when it lagging)
+// background change (issue: As background fade in and out, sometime it will show the base background, and especially when it lagging, Fixed.)
 function preloadImage(url, callback) {
     const img = new Image();
     img.src = url;
@@ -68,35 +76,44 @@ function preloadImage(url, callback) {
 function changeBackground() {
     currentBackgroundIndex = (currentBackgroundIndex + 1) % totalImages;
     const isMobile = window.innerWidth <= 768;
-    const basePath = isMobile ? mobileBasePath : computerBasePath;
-    const newBackground = `${basePath}${currentBackgroundIndex + 1}.png`;
+    const selectedBasePath = isMobile ? mobileBasePath : basePath;
+    console.log("Is mobile: ", isMobile); // Log to see if it's detecting mobile correctly
+    console.log("Selected path: ", selectedBasePath); // Log the path being used
+
+    const newBackground = `${selectedBasePath}${currentBackgroundIndex + 1}.png`;
 
     // Preload the new background before starting the fade
     preloadImage(newBackground, () => {
-        fadeBackground(newBackground);
+        fadeBackground(newBackground, isMobile); // Pass isMobile to fadeBackground
     });
 }
 
-function fadeBackground(newImage) {
+function fadeBackground(newImage, isMobile) {
     const bg1 = document.getElementById('background1');
     const bg2 = document.getElementById('background2');
 
     if (activeBackground === 1) {
         bg2.style.backgroundImage = `url('${newImage}')`;
-        bg2.style.opacity = 1; // Start fading in background2
+        bg2.style.opacity = 1; // Fading in background2
 
         setTimeout(() => {
-            bg1.style.opacity = 0; // Fade out background1 after background2 has started fading in
-        }, 100); // Delay to avoid showing the base background
+            bg1.style.opacity = 0; // Fade out background1
+        }, isMobile ? 200 : 100); // Add slightly more delay for mobile to ensure smoothness
         activeBackground = 2;
     } else {
         bg1.style.backgroundImage = `url('${newImage}')`;
         bg1.style.opacity = 1; // Start fading in background1
 
         setTimeout(() => {
-            bg2.style.opacity = 0; // Fade out background2 after background1 has started fading in
-        }, 100); // Delay to avoid showing the base background
+            bg2.style.opacity = 0; // Fade out background2
+        }, isMobile ? 200 : 100); // Add slightly more delay for mobile to ensure smoothness
         activeBackground = 1;
+    }
+
+    function preloadImage(url, callback) {
+        const img = new Image();
+        img.src = url;
+        img.onload = callback; // Call the callback once the image is loaded
     }
 }
 
@@ -113,7 +130,7 @@ function fadeInBackground(imageUrl) {
 // Show tooltip with information
 function showTooltip(message) {
     const tooltip = document.getElementById('bg-info-tooltip');
-    tooltip.innerHTML = `${message} <img src="../Webpic/Sparkle/icon/02.png" alt="Icon" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 5px;">`;
+    tooltip.innerHTML = `${message} <img src="${iconBasePath}2.png" alt="Icon" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 5px;">`;
     tooltip.style.visibility = 'visible';
     tooltip.style.opacity = 1;
 
