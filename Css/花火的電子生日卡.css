@@ -40,8 +40,6 @@ body {
     opacity: 0;
 }
 
-
-
 .message {
     font-size: 5vw;
     /* Responsive text size */
@@ -78,7 +76,6 @@ body {
     font-size: var(--BFS);
     color: white;
 }
-
 
 #firework-btn {
     margin-top: 20px;

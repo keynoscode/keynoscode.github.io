@@ -1,6 +1,8 @@
 :root {
     --BFS: 2em;
+    /*button font size*/
     --BgFS: 1.2em;
+    /*background button font size*/
 }
 
 body {
@@ -9,8 +11,9 @@ body {
     justify-content: center;
     align-items: center;
     height: calc(var(--vh, 1vh) * 100);
+    /* Uses the dynamically calculated height */
     background-color: #222;
-    background-image: url('../Webpic/Onion\,\ coffee/computer_background/01.png');
+    background-image: url('../Webpic/Cafes/computer_background/1.png');
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -23,9 +26,11 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(var(--vh, 1vh) * 100);
+    /* Uses the dynamically calculated height */
     background-size: cover;
     background-position: center;
+    margin: 0;
     transition: opacity 0.7s ease-in-out;
     z-index: -1;
     opacity: 1;
@@ -37,10 +42,14 @@ body {
 
 .message {
     font-size: 5vw;
+    /* Responsive text size */
     color: #fff;
     background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black background */
     padding: 10px 20px;
+    /* Add padding around the text */
     border-radius: 10px;
+    /* Rounded corners for the background */
     opacity: 0;
     animation: fadeIn 2s ease-in-out 1 forwards;
 }
@@ -57,7 +66,8 @@ body {
 
 #firework-btn,
 #auto-firework-btn,
-#bg-change-btn {
+#bg-change-btn,
+#background-source {
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
@@ -67,13 +77,13 @@ body {
     color: white;
 }
 
-
 #firework-btn {
     margin-top: 20px;
     background-color: #ff7300;
     position: relative;
 }
 
+/* Automatically set off fireworks button */
 #auto-firework-btn {
     margin-left: 10px;
     /* Space between the two buttons */
@@ -83,7 +93,8 @@ body {
     /* Ensures buttons stay together */
 }
 
-#bg-change-btn {
+#bg-change-btn, #background-source {
+    /* This ensures the background covers the visible screen, including after address bar hides */
     background-size: 100% calc(var(--vh, 1vh) * 100);
     background-repeat: no-repeat;
     background-position: center;
@@ -94,6 +105,16 @@ body {
     font-size: var(--BgFS);
 }
 
+#bg-change-btn{
+    right: 160px;
+}
+
+#background-source {
+    border: 1px solid #0175f1;
+    cursor: pointer;
+}
+
+/* Tooltip styling */
 #bg-info-tooltip {
     position: absolute;
     bottom: 60px;
@@ -109,16 +130,21 @@ body {
     z-index: 1;
 }
 
+/* Media query for mobile devices */
 @media only screen and (max-height: 700px) {
     :root {
         --BFS: 1.4em;
+        /*button font size*/
         --BgFS: 0.8em;
+        /*background button font size*/
     }
 }
 
 @media only screen and (max-width: 768px) {
+    
+
     body {
-        background-image: url('../Webpic/Onion\,\ coffee/phone_background/01.png');
+        background-image: url('../Webpic/Cafes/phone_background/1.png');
     }
 
     .message {
@@ -127,16 +153,20 @@ body {
 
     :root {
         --BFS: 1.1em;
+        /*button font size*/
         --BgFS: 0.9em;
+        /*background button font size*/
     }
 }
 
+/* Firework container */
 d {
     position: absolute;
     width: 0;
     height: 0;
 }
 
+/* Particle styling with shiny effect */
 pt {
     position: absolute;
     width: 8px;
@@ -144,7 +174,9 @@ pt {
     background-color: #00aeff;
     border-radius: 50%;
     animation: explode 1.5s ease-out forwards, twinkle 0.5s infinite alternate;
+    /* Add twinkle animation */
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    /* Initial glow */
 }
 
 @keyframes explode {
@@ -161,15 +193,18 @@ pt {
     100% {
         opacity: 0;
         transform: translate(var(--x, 0rem), calc(var(--y, 0rem) + 5rem)) scale(0.5);
+        /* Move downward */
     }
 }
 
 @keyframes twinkle {
     0% {
         box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+        /* Bright glow */
     }
 
     100% {
         box-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
+        /* Dimmer glow */
     }
 }
