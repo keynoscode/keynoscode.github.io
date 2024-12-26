@@ -1,17 +1,15 @@
 :root {
-    --BFS: 2em;
-    /*button font size*/
-    --BgFS: 1.2em;
-    /*background button font size*/
+    --BFS: 2em;    /*button font size*/
+    --BgFS: 1.2em; /*background button font size*/
 }
 
+/* Your existing body and background styles */
 body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: calc(var(--vh, 1vh) * 100);
-    /* Uses the dynamically calculated height */
     background-color: #222;
     background-image: url('../Webpic/Sparkle/computer_background/1.png');
     background-size: cover;
@@ -20,6 +18,7 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
+/* Keep your background transition effects */
 #background1,
 #background2 {
     position: absolute;
@@ -27,7 +26,6 @@ body {
     left: 0;
     width: 100%;
     height: calc(var(--vh, 1vh) * 100);
-    /* Uses the dynamically calculated height */
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -40,30 +38,39 @@ body {
     opacity: 0;
 }
 
+/* Enhanced firework elements */
+.firework-container {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    width: 0;
+    height: 0;
+}
+
+/* Enhanced particle styling */
+.firework-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #00aeff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: explode 1.5s ease-out forwards, twinkle 0.5s infinite alternate;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* Your message styling */
 .message {
     font-size: 5vw;
-    /* Responsive text size */
     color: #fff;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Semi-transparent black background */
     padding: 10px 20px;
-    /* Add padding around the text */
     border-radius: 10px;
-    /* Rounded corners for the background */
     opacity: 0;
     animation: fadeIn 2s ease-in-out 1 forwards;
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
+/* Enhanced button styling */
 #firework-btn,
 #auto-firework-btn,
 #bg-change-btn,
@@ -75,6 +82,7 @@ body {
     animation: fadeIn 2s ease-in-out 1 forwards;
     font-size: var(--BFS);
     color: white;
+    transition: all 0.3s ease;
 }
 
 #firework-btn {
@@ -83,18 +91,25 @@ body {
     position: relative;
 }
 
-/* Automatically set off fireworks button */
+#firework-btn:hover,
+#auto-firework-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
 #auto-firework-btn {
     margin-left: 10px;
-    /* Space between the two buttons */
     background-color: #28a745;
     position: relative;
     display: inline-block;
-    /* Ensures buttons stay together */
 }
 
+#auto-firework-btn.active {
+    background-color: #f44336;
+}
+
+/* Keep your background button styling */
 #bg-change-btn, #background-source {
-    /* This ensures the background covers the visible screen, including after address bar hides */
     background-size: 100% calc(var(--vh, 1vh) * 100);
     background-repeat: no-repeat;
     background-position: center;
@@ -105,20 +120,18 @@ body {
     font-size: var(--BgFS);
 }
 
-#bg-change-btn{
+#bg-change-btn {
     right: 160px;
 }
 
 #background-source {
     border: 1px solid #0175f1;
-    cursor: pointer;
 }
 
-/* Tooltip styling */
 #bg-info-tooltip {
     position: absolute;
-    bottom: 60px;
-    right: 20px;
+    bottom: 70px;
+    right: 100px;
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 10px;
@@ -130,19 +143,47 @@ body {
     z-index: 1;
 }
 
-/* Media query for mobile devices */
+/* Enhanced animations */
+@keyframes explode {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    70% {
+        opacity: 1;
+        transform: translate(var(--x, 0rem), var(--y, 0rem)) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--x, 0rem), calc(var(--y, 0rem) + 5rem)) scale(0.5);
+    }
+}
+
+@keyframes twinkle {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                   0 0 20px rgba(255, 255, 255, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 
+                   0 0 10px rgba(255, 255, 255, 0.2);
+    }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Your existing media queries */
 @media only screen and (max-height: 700px) {
     :root {
         --BFS: 1.4em;
-        /*button font size*/
         --BgFS: 0.8em;
-        /*background button font size*/
     }
 }
 
 @media only screen and (max-width: 768px) {
-    
-
     body {
         background-image: url('../Webpic/Sparkle/phone_background/1.png');
     }
@@ -153,58 +194,6 @@ body {
 
     :root {
         --BFS: 1.1em;
-        /*button font size*/
         --BgFS: 0.9em;
-        /*background button font size*/
-    }
-}
-
-/* Firework container */
-d {
-    position: absolute;
-    width: 0;
-    height: 0;
-}
-
-/* Particle styling with shiny effect */
-pt {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background-color: #00aeff;
-    border-radius: 50%;
-    animation: explode 1.5s ease-out forwards, twinkle 0.5s infinite alternate;
-    /* Add twinkle animation */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-    /* Initial glow */
-}
-
-@keyframes explode {
-    0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-    }
-
-    70% {
-        opacity: 1;
-        transform: translate(var(--x, 0rem), var(--y, 0rem)) scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translate(var(--x, 0rem), calc(var(--y, 0rem) + 5rem)) scale(0.5);
-        /* Move downward */
-    }
-}
-
-@keyframes twinkle {
-    0% {
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
-        /* Bright glow */
-    }
-
-    100% {
-        box-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
-        /* Dimmer glow */
     }
 }
