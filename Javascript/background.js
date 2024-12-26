@@ -1,148 +1,200 @@
-// To fix the annoying address bar resize problem
-function updateVH() {
-    // Get the actual viewport height
-    const vh = window.innerHeight * 0.01;
-    // Set a custom property '--vh' to the root element (used in CSS)
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-
-// Run this function on page load
-updateVH();
-
-// Recalculate the viewport height on window resize (to handle orientation change, etc.)
-window.addEventListener('resize', updateVH);
-//------------------------------------------------------------------------------------------------------
-
+// Global variables and constants
 let currentBackgroundIndex = 0;
 let bgChangeInterval;
+let activeBackground = 1;
+const totalImages = 30;
+const changeInterval = 5; // Interval in seconds
+const imageCache = new Map();
 
+// Paths configuration
 let basePath = "../Webpic/Sparkle/computer_background/";
 let mobileBasePath = "../Webpic/Sparkle/phone_background/";
 let iconBasePath = "../Webpic/Sparkle/icon/";
-const totalImages = 30;
-const changeInterval = 5; // Interval in seconds between background changes
 
-// Add an event listener to the dropdown menu
-document.getElementById('background-source').addEventListener('change', function () {
-    basePath = this.value; // Set desktop base path
-    mobileBasePath = this.value.replace('computer_background', 'phone_background'); // Set mobile base path
-    iconBasePath = this.value.replace('computer_background', 'icon'); // Set the icon path dynamically
-});
-
-// Tooltip element for background information
-const bgInfoTooltip = document.createElement('div');
-bgInfoTooltip.id = 'bg-info-tooltip';
-document.body.appendChild(bgInfoTooltip);
-
-// Background layers
-
-const background1 = document.createElement('b1');
-background1.id = 'background1';
-document.body.appendChild(background1);
-
-const background2 = document.createElement('b2');
-background2.id = 'background2';
-document.body.appendChild(background2);
-
-let activeBackground = 1; // Track which background is active
-
-//------------------------------------------------------------------------------------------------------
-
-// Modify the tooltip message
-document.getElementById("bg-change-btn").addEventListener("click", function () {
-    if (!bgChangeInterval) {
-        bgChangeInterval = setInterval(changeBackground, changeInterval * 1000); // Change every 'changeInterval' seconds
-        this.textContent = "停止換背景";
-
-        // Show tooltip with the updated message and image
-        showTooltip(`背景圖最大數量: ${totalImages}，背景每 ${changeInterval} 秒切換`);
-    } else {
-        clearInterval(bgChangeInterval);
-        bgChangeInterval = null;
-        this.textContent = "換背景";
-
-        // Hide tooltip when stopping the background change
-        hideTooltip();
-    }
-});
-//------------------------------------------------------------------------------------------------------
-// background change (issue: As background fade in and out, sometime it will show the base background, and especially when it lagging, Fixed.)
-function preloadImage(url, callback) {
-    const img = new Image();
-    img.src = url;
-    img.onload = callback; // Once the image is loaded, proceed with the transition
+// Viewport height fix for mobile devices
+function updateVH() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
 
+// Debounce function for resize events
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Initialize background elements
+function initializeBackgrounds() {
+    // Create background elements
+    const background1 = document.createElement('div');
+    background1.id = 'background1';
+    document.body.appendChild(background1);
+
+    const background2 = document.createElement('div');
+    background2.id = 'background2';
+    document.body.appendChild(background2);
+
+    // Create tooltip element
+    const bgInfoTooltip = document.createElement('div');
+    bgInfoTooltip.id = 'bg-info-tooltip';
+    document.body.appendChild(bgInfoTooltip);
+}
+
+// Image preloading with enhanced error handling
+function preloadImage(url, callback) {
+    if (imageCache.has(url)) {
+        callback();
+        return;
+    }
+
+    const img = new Image();
+    const timeoutId = setTimeout(() => {
+        if (!imageCache.has(url)) {
+            console.warn(`Image load timed out: ${url}`);
+            img.src = '';
+            callback(new Error('Image load timeout'));
+        }
+    }, 10000);
+
+    img.onload = () => {
+        clearTimeout(timeoutId);
+        imageCache.set(url, img);
+        callback();
+    };
+
+    img.onerror = () => {
+        clearTimeout(timeoutId);
+        console.error(`Failed to load image: ${url}`);
+        callback(new Error('Image load failed'));
+    };
+
+    img.src = url;
+}
+
+// Background changing logic
 function changeBackground() {
     currentBackgroundIndex = (currentBackgroundIndex + 1) % totalImages;
     const isMobile = window.innerWidth <= 768;
     const selectedBasePath = isMobile ? mobileBasePath : basePath;
-    console.log("Is mobile: ", isMobile); // Log to see if it's detecting mobile correctly
-    console.log("Selected path: ", selectedBasePath); // Log the path being used
-
     const newBackground = `${selectedBasePath}${currentBackgroundIndex + 1}.png`;
 
-    // Preload the new background before starting the fade
-    preloadImage(newBackground, () => {
-        fadeBackground(newBackground, isMobile); // Pass isMobile to fadeBackground
+    preloadImage(newBackground, (error) => {
+        if (!error) {
+            fadeBackground(newBackground, isMobile);
+        } else {
+            console.error('Failed to change background:', error);
+            // Attempt to load next image on failure
+            currentBackgroundIndex = (currentBackgroundIndex + 1) % totalImages;
+        }
     });
 }
 
+// Enhanced fade transition
 function fadeBackground(newImage, isMobile) {
     const bg1 = document.getElementById('background1');
     const bg2 = document.getElementById('background2');
 
+    if (!bg1 || !bg2) {
+        console.error('Background elements not found');
+        return;
+    }
+
+    const transitionDuration = isMobile ? 200 : 100;
+
     if (activeBackground === 1) {
         bg2.style.backgroundImage = `url('${newImage}')`;
-        bg2.style.opacity = 1; // Fading in background2
-
-        setTimeout(() => {
-            bg1.style.opacity = 0; // Fade out background1
-        }, isMobile ? 200 : 100); // Add slightly more delay for mobile to ensure smoothness
+        requestAnimationFrame(() => {
+            bg2.style.opacity = '1';
+            setTimeout(() => {
+                bg1.style.opacity = '0';
+            }, transitionDuration);
+        });
         activeBackground = 2;
     } else {
         bg1.style.backgroundImage = `url('${newImage}')`;
-        bg1.style.opacity = 1; // Start fading in background1
-
-        setTimeout(() => {
-            bg2.style.opacity = 0; // Fade out background2
-        }, isMobile ? 200 : 100); // Add slightly more delay for mobile to ensure smoothness
+        requestAnimationFrame(() => {
+            bg1.style.opacity = '1';
+            setTimeout(() => {
+                bg2.style.opacity = '0';
+            }, transitionDuration);
+        });
         activeBackground = 1;
     }
+}
 
-    function preloadImage(url, callback) {
-        const img = new Image();
-        img.src = url;
-        img.onload = callback; // Call the callback once the image is loaded
+// Tooltip management
+function showTooltip(message) {
+    const tooltip = document.getElementById('bg-info-tooltip');
+    if (!tooltip) return;
+
+    tooltip.innerHTML = `${message} <img src="${iconBasePath}2.png" alt="Icon" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 5px;">`;
+    tooltip.style.visibility = 'visible';
+    tooltip.style.opacity = '1';
+
+    // Clear existing timeout and set new one
+    if (tooltip.hideTimeout) {
+        clearTimeout(tooltip.hideTimeout);
+    }
+    tooltip.hideTimeout = setTimeout(hideTooltip, 7000);
+}
+
+function hideTooltip() {
+    const tooltip = document.getElementById('bg-info-tooltip');
+    if (!tooltip) return;
+
+    tooltip.style.opacity = '0';
+    setTimeout(() => {
+        tooltip.style.visibility = 'hidden';
+    }, 500);
+}
+
+// Background source change handler
+function initializeBackgroundSource() {
+    const sourceSelect = document.getElementById('background-source');
+    if (sourceSelect) {
+        sourceSelect.addEventListener('change', function() {
+            const newBasePath = this.value;
+            basePath = newBasePath;
+            mobileBasePath = newBasePath.replace('computer_background', 'phone_background');
+            iconBasePath = newBasePath.replace('computer_background', 'icon');
+        });
     }
 }
 
-function fadeInBackground(imageUrl) {
-    const body = document.body;
-    body.style.transition = "background-image 0.7s ease-in-out"; // 0.7秒淡入效果
-    body.style.backgroundImage = `url('${imageUrl}')`;
-    body.style.backgroundSize = "cover"; // Ensure the background covers the whole screen
-    body.style.backgroundPosition = "center";
+// Background change button handler
+function initializeBackgroundButton() {
+    const bgChangeBtn = document.getElementById('bg-change-btn');
+    if (bgChangeBtn) {
+        bgChangeBtn.addEventListener('click', function() {
+            if (!bgChangeInterval) {
+                bgChangeInterval = setInterval(changeBackground, changeInterval * 1000);
+                this.textContent = "停止換背景";
+                showTooltip(`背景圖最大數量: ${totalImages}，背景每 ${changeInterval} 秒切換`);
+            } else {
+                clearInterval(bgChangeInterval);
+                bgChangeInterval = null;
+                this.textContent = "換背景";
+                hideTooltip();
+            }
+        });
+    }
 }
 
+// Initialize everything when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initializeBackgrounds();
+    initializeBackgroundSource();
+    initializeBackgroundButton();
+    updateVH();
+});
 
-
-// Show tooltip with information
-function showTooltip(message) {
-    const tooltip = document.getElementById('bg-info-tooltip');
-    tooltip.innerHTML = `${message} <img src="${iconBasePath}2.png" alt="Icon" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 5px;">`;
-    tooltip.style.visibility = 'visible';
-    tooltip.style.opacity = 1;
-
-    // Automatically hide the tooltip after 7 seconds
-    setTimeout(hideTooltip, 7000);
-}
-
-// Hide tooltip
-function hideTooltip() {
-    const tooltip = document.getElementById('bg-info-tooltip');
-    tooltip.style.opacity = 0;
-    setTimeout(() => {
-        tooltip.style.visibility = 'hidden';
-    }, 500); // Wait for fade-out to complete
-}
+// Window event listeners
+window.addEventListener('resize', debounce(updateVH, 250));
+window.addEventListener('beforeunload', () => {
+    if (bgChangeInterval) {
+        clearInterval(bgChangeInterval);
+    }
+});
