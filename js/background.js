@@ -148,7 +148,7 @@ function hideTooltip() {
     tooltip.style.opacity = '0';
     setTimeout(() => {
         tooltip.style.visibility = 'hidden';
-    }, 500);
+    }, 20);
 }
 
 // Background source change handler

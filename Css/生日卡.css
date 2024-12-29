@@ -131,7 +131,7 @@ body {
 #bg-info-tooltip {
     position: absolute;
     bottom: 70px;
-    right: 100px;
+    right: 30px;
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 10px;

@@ -1,8 +1,8 @@
 // Configuration object for easy customization
 const FIREWORK_CONFIG = {
     PARTICLES_PER_FIREWORK: 30,
-    COOLDOWN_DELAY: 500,
-    AUTO_FIREWORK_DELAY: 500,
+    COOLDOWN_DELAY: 400,
+    AUTO_FIREWORK_DELAY: 400,
     SCREEN_WIDTH_FACTOR: 0.7,
     SCREEN_HEIGHT_FACTOR: 0.6,
     MIN_VELOCITY: 3,
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fireworkBtn = document.getElementById("firework-btn");
     const autoFireworkBtn = document.getElementById("auto-firework-btn");
 
-    if (fireworkBtn) {
+    if (fireworkBtn && !cooldown) {
         fireworkBtn.addEventListener("click", createFirework);
     }
 
