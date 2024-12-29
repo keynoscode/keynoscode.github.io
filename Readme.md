@@ -1,4 +1,4 @@
-
+<body>
     <nav>
         <ul>
             <li>
@@ -23,3 +23,4 @@
             </li>
         </ul>
     </nav>
+</body>
