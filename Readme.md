@@ -1,7 +1,59 @@
-<div>利姆露的網路領域-首頁: https://keynoscode.github.io/web/利姆露的網路領域-首頁.html </div>
-
-<div>利姆露的動畫列表: https://keynoscode.github.io/web/利姆露的動畫列表.html </div>
-
-<div>花火的電子生日卡: https://keynoscode.github.io/web/花火的電子生日卡.html </div>
-
-<div>洋蔥的電子生日卡: https://keynoscode.github.io/web/洋蔥的電子生日卡.html </div>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Navigation</title>
+    <style>
+        .nav-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .nav-list {
+            list-style: none;
+            padding: 0;
+        }
+        .nav-item {
+            margin: 10px 0;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #0066cc;
+            padding: 8px;
+            display: block;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="nav-link" href="https://keynoscode.github.io/web/利姆露的網路領域-首頁.html">
+                    利姆露的網路領域-首頁
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://keynoscode.github.io/web/利姆露的動畫列表.html">
+                    利姆露的動畫列表
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://keynoscode.github.io/web/花火的電子生日卡.html">
+                    花火的電子生日卡
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://keynoscode.github.io/web/洋蔥的電子生日卡.html">
+                    洋蔥的電子生日卡
+                </a>
+            </li>
+        </ul>
+    </nav>
+</body>
+</html>
