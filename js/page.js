@@ -10,7 +10,7 @@ const tw= text.getPropertyValue('--textw')
 */
 
 /*
-document.getElementsByClassName("icon")[0].innerHTML += desiredText.link('../Web/利姆露的網路領域-首頁.html');
+document.getElementsByClassName("icon")[0].innerHTML += desiredText.link('../web/利姆露的網路領域-首頁.html');
 */
 
 

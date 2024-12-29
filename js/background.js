@@ -7,9 +7,9 @@ const changeInterval = 4; // Interval in seconds
 const imageCache = new Map();
 
 // Paths configuration
-let basePath = "../Webpic/Sparkle/computer_background/";
-let mobileBasePath = "../Webpic/Sparkle/phone_background/";
-let iconBasePath = "../Webpic/Sparkle/icon/";
+let basePath = "../webpic/sparkle/computer_background/";
+let mobileBasePath = "../webpic/sparkle/phone_background/";
+let iconBasePath = "../webpic/sparkle/icon/";
 
 // Viewport height fix for mobile devices
 function updateVH() {

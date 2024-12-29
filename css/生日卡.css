@@ -11,7 +11,7 @@ body {
     align-items: center;
     height: calc(var(--vh, 1vh) * 100);
     background-color: #222;
-    background-image: url('../Webpic/Sparkle/computer_background/1.png');
+    background-image: url('../webpic/sparkle/computer_background/1.png');
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -185,7 +185,7 @@ body {
 
 @media only screen and (max-width: 768px) {
     body {
-        background-image: url('../Webpic/Sparkle/phone_background/1.png');
+        background-image: url('../webpic/sparkle/phone_background/1.png');
     }
 
     .message {
