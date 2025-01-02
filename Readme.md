@@ -2,6 +2,11 @@
     <nav>
         <ul>
             <li>
+                <a href="https://rimurusama.us.kg/nav">
+                    導航
+                </a>
+            </li>
+            <li>
                 <a href="/web/利姆露的網路領域-首頁.html">
                     利姆露的網路領域-首頁
                 </a>
