@@ -2,7 +2,7 @@
     <nav>
         <ul>
             <li>
-                <a href="https://rimurusama.us.kg/nav">
+                <a href="https://keynoscode.github.io/nav">
                     導航
                 </a>
             </li>
