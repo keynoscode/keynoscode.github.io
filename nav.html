@@ -1,79 +1,55 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/js/icon.js"></script>
+    <script src="/js/redirect.js"></script>
+    <script>
+      icon.execute('rimuru');
+    </script>
     <title>導航</title>
-    <style>
-        .nav-container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
+    <link rel="stylesheet" href="/css/nav_page.css"></style>
+  </head>
 
-        .nav-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .nav-item {
-            margin: 10px 0;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #0066cc;
-            padding: 8px;
-            display: block;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-link:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
-</head>
-
-<body>
+  <body>
     <nav class="nav-container">
-        <ul class="nav-list">
-            <li class="nav-item">
-                <a class="nav-link" href="./web/利姆露的網路領域-首頁.html">
-                    利姆露的網路領域-首頁
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./web/利姆露的動畫列表.html">
-                    利姆露的動畫列表
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./web/花火的電子生日卡.html">
-                    花火的電子生日卡
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./web/洋蔥的電子生日卡.html">
-                    洋蔥的電子生日卡
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://keynoscode.github.io">
-                    keynoscode.github.io
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://rimurusama.us.kg">
-                    rimurusama.us.kg
-                </a>
-            </li>
-        </ul>
+      <ul class="nav-list">
+        <li class="nav-title">
+            導航
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"  onclick="redirect('homepage')">
+            利姆露的網路領域-首頁
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"  onclick="redirect('利姆露的動畫列表')">
+            利姆露的動畫列表
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick="redirect('花火的電子生日卡')">
+            花火的電子生日卡
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick="redirect('洋蔥的電子生日卡.html')">
+            洋蔥的電子生日卡
+        </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://keynoscode.github.io">
+            keynoscode.github.io
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://rimurusama.us.kg">
+            rimurusama.us.kg
+          </a>
+        </li>
+      </ul>
     </nav>
-</body>
-<script>
-
-</script>
-
+  </body>
+  <script></script>
 </html>

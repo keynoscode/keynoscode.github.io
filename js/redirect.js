@@ -9,8 +9,9 @@ const redirect = (link) => {
             targetUrl = '/nav.html';
             break;
         default:
-            console.error('Invalid link specified');
-            return;
+            targetUrl = `/web/${link}.html`;
+            console.log(targetUrl)
+            break;
     }
     window.location.replace(targetUrl); // Use replace instead of href
 }

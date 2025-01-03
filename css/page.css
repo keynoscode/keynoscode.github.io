@@ -25,7 +25,7 @@ body {
     background-color: rgb(122, 122, 122);
     background-position-y: (--height);
     background-size: cover;
-    background-image: url('../webpic/rimuru/computer_background/10.png');
+    background-image: url('/webpic/rimuru/computer_background/10.png');
     
     background-repeat: no-repeat;
     /*L*/
@@ -184,7 +184,7 @@ content1>span {
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('../webpic/rimuru/phone_background/004.png');
+        background-image: url('/webpic/rimuru/phone_background/004.png');
         
     }
 
@@ -222,7 +222,7 @@ content1>span {
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('../webpic/rimuru/phone_background/004.png');
+        background-image: url('/webpic/rimuru/phone_background/004.png');
         
     }
 

@@ -1,0 +1,86 @@
+:root {
+  --font-size-base: 28px;
+  --font-scale: 1.2;
+  --main-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+    "PingFang SC", "Source Han Sans SC", sans-serif;
+}
+
+/* Base styles */
+html {
+  font-size: var(--font-size-base);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+    sans-serif;
+  line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px; /* Slightly smaller base for mobile */
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 18px; /* Larger base for very large screens */
+  }
+}
+
+@media (max-height: 800px) {
+ html {
+     font-size: 18px;
+ }
+ 
+}
+
+
+
+
+body {
+  background-color: grey;
+
+  font-family: var(--main-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.nav-container {
+  max-width: 800px;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;  /* Centers both horizontally and vertically */
+
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-title{
+ margin: 10px 0;
+ padding: 8px;
+}
+
+.nav-item {
+  margin: 10px 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #0060b9;
+  padding: 8px;
+  display: block;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
