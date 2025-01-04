@@ -1,0 +1,28 @@
+
+
+.novel-container {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 20px;
+ line-height: 1.8;
+}
+
+.chapter-title {
+ text-align: center;
+ margin: 2rem 0;
+ font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.novel-content {
+ font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+ font-size: clamp(1rem, 2vw, 1.2rem);
+ letter-spacing: 0.025em;
+ margin-bottom: 2rem;
+}
+
+.paragraph {
+ margin-bottom: 1.5rem;
+ text-indent: 2em;
+ white-space: pre-line;  /* This preserves line breaks */
+ line-height: 1.8;
+}

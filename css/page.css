@@ -6,7 +6,7 @@
 
 :root {
     --height: 60px;
-    --pr: 5%;
+    --pr: 2%;
     --textw: 1.08em; /*heading width default depnds on text width*/
     --ptextw: 1.11em; /*heading text width for phone*/
     --pnl: 0; /*the num of the heading text*/
@@ -25,7 +25,7 @@ body {
     background-color: rgb(122, 122, 122);
     background-position-y: (--height);
     background-size: cover;
-    background-image: url('/webpic/rimuru/computer_background/10.png');
+    background-image: url('/webpic/rimuru/computer_background/38.png');
     
     background-repeat: no-repeat;
     /*L*/
@@ -40,16 +40,6 @@ heading {
     height: var(--height);
     padding: 5px;
     background-color: #AAE1F5;
-}
-
-heading,
-content1 {
-    width: 100%;
-    padding-left: 2%; /*Left original position*/
-    padding-right: var(--pr);
-    box-sizing: border-box;
-    display: inline-block;
-    /*same as div*/
 }
 
 heading>span {
@@ -99,8 +89,14 @@ heading>span>a>img {
     }
 }
 
-/*Heading finish*/
-/*Content1 start*/
+heading,
+content1 {
+    width: 100%;
+    padding-left: 2%; /*Left original position*/
+    padding-right: var(--pr);
+    box-sizing: border-box;
+    display: inline-block;
+}
 
 content1 {
     margin-top: 2vh;
@@ -108,7 +104,6 @@ content1 {
 
 content1>span {
     display: inline-block;
-    background-color: rgb(170, 255, 160);
 }
 
 .video {
@@ -184,7 +179,7 @@ content1>span {
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('/webpic/rimuru/phone_background/004.png');
+        background-image: url('/webpic/rimuru/phone_background/7.png');
         
     }
 
@@ -222,7 +217,7 @@ content1>span {
     body {
         background-color: rgb(245, 185, 170);
         
-        background-image: url('/webpic/rimuru/phone_background/004.png');
+        background-image: url('/webpic/rimuru/phone_background/7.png');
         
     }
 
