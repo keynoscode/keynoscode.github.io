@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="蝶，祝你生日快樂！" />
+    <link rel="icon" type="image/x-icon" href="/webpic/sakura/icon/1.png" />
+    <link rel="stylesheet" href="/css/生日卡.css" />
+    <title>蝶の生日卡</title>
+
+    <style>
+      #bg-change-btn {
+        right: 260px;
+      }
+      
+    </style>
+  </head>
+
+  <body>
+    <div class="message">蝶，祝你生日快樂！</div>
+    <div class="IB">
+      <button id="firework-btn">點我放煙花</button>
+      <button id="auto-firework-btn">自動放煙花</button>
+      <button id="bg-change-btn">換背景</button>
+
+      <!-- Dropdown list and background path -->
+      <select id="background-source">
+        <option value="/webpic/rimuru/computer_background/">利姆露</option>
+        <option value="/webpic/rimuru/computer_background/">
+          你會選利姆露吧：）
+        </option>
+        <option value="/webpic/sakura/computer_background/">
+          蝶の專用背景
+        </option>
+        <option value="/webpic/cafes/computer_background/">咖啡廳</option>
+        <option value="/webpic/sparkle/computer_background/">花火</option>
+      </select>
+    </div>
+
+    <script src="/js/hanabi.js"></script>
+    <script src="/js/background.js"></script>
+  </body>
+</html>

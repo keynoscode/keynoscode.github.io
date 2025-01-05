@@ -3,7 +3,7 @@ let currentBackgroundIndex = 0;
 let bgChangeInterval;
 let activeBackground = 1;
 const totalImages = 30;
-const changeInterval = 4; // Interval in seconds
+const changeInterval = 5; // Interval in seconds
 const imageCache = new Map();
 
 // Paths configuration
