@@ -15,7 +15,6 @@
       #bg-change-btn {
         right: 260px;
       }
-      
     </style>
   </head>
 
@@ -41,6 +40,21 @@
     </div>
 
     <script src="/js/hanabi.js"></script>
+    <script>function toggleAutoFireworks(force) {
+      const button = document.getElementById("auto-firework-btn");
+      const shouldActivate = force !== undefined ? force : !autoFireworkInterval;
+  
+      if (shouldActivate && !autoFireworkInterval) {
+          autoFireworkInterval = setInterval(createFirework, FIREWORK_CONFIG.AUTO_FIREWORK_DELAY);
+          button.textContent = "停止自動放煙花";
+          button.classList.add('active');
+      } else if (!shouldActivate && autoFireworkInterval) {
+          clearInterval(autoFireworkInterval);
+          autoFireworkInterval = null;
+          button.textContent = "自動放煙花";
+          button.classList.remove('active');
+      }
+  }</script>
     <script src="/js/background.js"></script>
   </body>
 </html>
