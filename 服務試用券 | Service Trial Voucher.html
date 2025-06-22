@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服務試用券 | Service Trial Voucher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 五行配色原則 (Five Elements Color Palette) */
+        :root {
+            /* 土 (主元素): 咖啡色、茶色、黃褐色、橘棕 */
+            --color-earth-text: #6D4C41; /* 主要文字: 深咖啡棕 */
+            --color-earth-main: #D2B48C; /* 主要區域: 柔和茶色 */
+
+            /* 金 (次忌): 改為米色、奶茶色 */
+            --color-metal-bg: #F5F5DC; /* 背景: 米色 */
+
+            /* 火 (喜): 紅、粉紅、紫 */
+            --color-fire-accent: #8A2BE2; /* 副標題/重點: 紫羅蘭色 */
+            
+            /* 木 (生火): 綠色 */
+            --color-wood-accent: #556B2F; /* 少量點綴: 暗橄欖綠 */
+
+            /* QR碼背景: 淡橙漸變 (屬土) */
+            --qr-bg-gradient: linear-gradient(135deg, #FFDDC1, #FFCBA4);
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact; /* 確保打印時顏色正確 */
+                print-color-adjust: exact;
+            }
+            .voucher-a4 {
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                height: 297mm;
+            }
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--color-metal-bg);
+            color: var(--color-earth-text);
+            font-size: 18px;
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .voucher-a4 {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 20px auto;
+            padding: 15mm;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            color: var(--color-earth-text);
+            text-align: center;
+            font-weight: 700;
+            border-bottom: 3px solid var(--color-earth-main);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--color-fire-accent);
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .offers-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .offer-card {
+            flex: 1;
+            padding: 25px;
+            border: 2px solid var(--color-wood-accent);
+            border-radius: 10px;
+            text-align: center;
+            background-color: #FAF8F2;
+        }
+        
+        .offer-card .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .offer-card .price {
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .promo-info {
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 15px;
+            background-color: #FFF8E1;
+            border-left: 5px solid var(--color-earth-main);
+            margin-bottom: 30px;
+        }
+
+        .rewards-section ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .rewards-section li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .rewards-section li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-wood-accent);
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .contact-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            border-top: 2px dashed var(--color-earth-main);
+            border-bottom: 2px dashed var(--color-earth-main);
+        }
+
+        .qr-code-container {
+            text-align: center;
+        }
+
+        .qr-code-container img {
+            width: 120px; /* 約 3cm to 4cm on A4 */
+            height: 120px;
+            display: block;
+            margin: 0 auto;
+            background: var(--qr-bg-gradient);
+            padding: 8px;
+            border-radius: 5px;
+        }
+        
+        .qr-code-container p {
+            margin-top: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--color-earth-text);
+        }
+
+        .terms-section {
+            margin-top: 25px;
+        }
+
+        .terms-section h3 {
+            font-size: 1.5rem;
+            color: var(--color-fire-accent);
+            text-align: center;
+        }
+
+        .terms-section ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 1.1rem;
+        }
+
+        .terms-section li {
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="voucher-a4">
+        <header>
+            <h1>Service Trial Voucher</h1>
+        </header>
+
+        <main>
+            <div class="offers-container">
+                <div class="offer-card">
+                    <p class="title">Free Tarot Reading</p>
+                    <p class="details">1 Question (up to 5 cards)</p>
+                </div>
+                <div class="offer-card">
+                    <p class="title">Foot Massage Half-Price Trial</p>
+                    <p class="details">40 minutes = £10</p>
+                </div>
+            </div>
+
+            <div class="promo-info">
+                This voucher allows you to try both services at a discounted price and supports the promotion of our Facebook page.
+                <br>
+                Present this voucher in person. Only one stamp is given per voucher after use.
+            </div>
+
+            <div class="rewards-section">
+                <h2>Support us for more rewards!</h2>
+                <ul>
+                    <li>Like our Facebook page</li>
+                    <li>Share the “Service Overview” post</li>
+                    <li>Leave an honest review after trying the service</li>
+                    <li>Join our WhatsApp subscriber list</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <div class="contact-section">
+                <div class="qr-code-container">
+                    <img src="https://i.imgur.com/37TWrbj.jpeg" alt="QR Code for Facebook Page">
+                    <p>Full Service Details (FB)</p>
+                </div>
+                <div class="qr-code-container">
+                    <img src="https://i.imgur.com/yXGYQ9k.jpeg" alt="QR Code for WhatsApp">
+                    <p>Book via WhatsApp</p>
+                </div>
+            </div>
+
+            <div class="terms-section">
+                <h3>Terms</h3>
+                <ul>
+                    <li>All services must be booked in advance via WhatsApp: <strong>+44 75992 66470</strong></li>
+                    <li>This voucher cannot be combined with other discounts.</li>
+                    <li>Stamp cards are non-transferable once signed.</li>
+                    <li>Used vouchers will be offered at a temple and respectfully burned.</li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
