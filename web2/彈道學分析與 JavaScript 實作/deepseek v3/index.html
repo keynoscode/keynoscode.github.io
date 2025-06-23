@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>箭术弹道学交互式学习平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            background: rgba(0, 0, 0, 0.6);
+            border-bottom: 3px solid var(--secondary);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--light);
+            opacity: 0.9;
+        }
+        
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 1000px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .panel {
+            background: rgba(44, 62, 80, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        .panel-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            padding: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .panel-header i {
+            margin-right: 12px;
+            font-size: 1.6rem;
+        }
+        
+        .panel-content {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--light);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid var(--gray);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.6);
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .input-row > div {
+            flex: 1;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-calculate {
+            background: linear-gradient(to right, var(--primary), #2980b9);
+            color: white;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(to right, var(--accent), #c0392b);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .results {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+        
+        .result-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .result-title {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .result-value {
+            font-size: 1.2rem;
+            word-break: break-all;
+        }
+        
+        .canvas-container {
+            background: #1e2a38;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 500px;
+            position: relative;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .theory-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .theory-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .equation {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            overflow-x: auto;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .error {
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 10px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 5px;
+            border: 1px solid var(--accent);
+        }
+        
+        .success {
+            color: var(--secondary);
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 10px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 5px;
+            border: 1px solid var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-bullseye"></i> 箭术弹道学交互式学习平台</h1>
+            <p class="subtitle">探索抛体运动的奥秘，掌握箭矢命中移动目标的数学原理与计算方法</p>
+        </header>
+        
+        <div class="content-wrapper">
+            <div class="panel">
+                <div class="panel-header">
+                    <i class="fas fa-calculator"></i> 弹道参数计算
+                </div>
+                <div class="panel-content">
+                    <div class="form-group">
+                        <label>发射者坐标 (x, y)</label>
+                        <div class="input-row">
+                            <div>
+                                <input type="number" id="firing-x" placeholder="X 坐标" value="0">
+                            </div>
+                            <div>
+                                <input type="number" id="firing-y" placeholder="Y 坐标" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>目标初始位置 (x, y)</label>
+                        <div class="input-row">
+                            <div>
+                                <input type="number" id="target-x" placeholder="X 坐标" value="100">
+                            </div>
+                            <div>
+                                <input type="number" id="target-y" placeholder="Y 坐标" value="50">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>目标移动路径</label>
+                        <select id="movement-type">
+                            <option value="0">静止目标 (n=0)</option>
+                            <option value="1" selected>线性移动 (n=1)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="path-data" class="form-group">
+                        <label>目标路径点 (x, y)</label>
+                        <div class="input-row">
+                            <div>
+                                <input type="number" id="path-x" placeholder="X 坐标" value="200">
+                            </div>
+                            <div>
+                                <input type="number" id="path-y" placeholder="Y 坐标" value="150">
+                            </div>
+                        </div>
+                        
+                        <label style="margin-top: 15px;">目标移动速度</label>
+                        <input type="number" id="move-speed" placeholder="移动速度 (单位/秒)" value="20">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>箭矢属性</label>
+                        <div class="input-row">
+                            <div>
+                                <input type="number" id="arrow-speed" placeholder="箭矢速度" value="40">
+                            </div>
+                            <div>
+                                <input type="number" id="arrow-delay" placeholder="发射延迟 (秒)" value="0.2" step="0.1">
+                            </div>
+                        </div>
+                        
+                        <div class="input-row" style="margin-top: 15px;">
+                            <div>
+                                <input type="number" id="target-radius" placeholder="目标半径" value="10">
+                            </div>
+                            <div>
+                                <input type="number" id="arrow-width" placeholder="箭矢宽度" value="2">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn-calculate" id="calculate-btn">
+                            <i class="fas fa-bolt"></i> 计算弹道
+                        </button>
+                        <button class="btn-reset" id="reset-btn">
+                            <i class="fas fa-redo"></i> 重置参数
+                        </button>
+                    </div>
+                    
+                    <div id="results-container">
+                        <!-- 结果将通过JavaScript动态填充 -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <i class="fas fa-chart-line"></i> 弹道可视化
+                </div>
+                <div class="panel-content">
+                    <div class="canvas-container">
+                        <canvas id="simulation-canvas"></canvas>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #3498db;"></div>
+                                <span>发射者位置</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #e74c3c;"></div>
+                                <span>目标初始位置</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #2ecc71;"></div>
+                                <span>命中位置</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #f1c40f;"></div>
+                                <span>箭矢轨迹</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="theory-section">
+                        <h3><i class="fas fa-book"></i> 弹道学核心原理</h3>
+                        <p>箭矢命中移动目标的核心在于解决抛体运动方程与目标运动轨迹的交点问题。</p>
+                        
+                        <div class="equation">
+                            命中时间方程: At² + Bt + C = 0<br>
+                            其中:<br>
+                            A = |Vₜ|² - Sₐ²<br>
+                            B = 2(dᵢ · Vₜ - Sₐ²Dₔ)<br>
+                            C = |dᵢ|² - Sₐ²Dₔ² - Rₑ²
+                        </div>
+                        
+                        <p>有效命中半径 Rₑ = r + width/2，其中 r 是目标半径，width 是箭矢宽度。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" style="margin-top: 2rem;">
+            <div class="panel-header">
+                <i class="fas fa-code"></i> JavaScript 弹道计算实现
+            </div>
+            <div class="panel-content">
+                <pre><code class="language-javascript">function calculateArrowIntercept(firingPos, targetInitialPos, targetPathData, arrowSpeed, arrowDelay, targetRadius, arrowWidth) {
+    const [xF, yF] = firingPos;
+    const [xT0, yT0] = targetInitialPos;
+    const n = targetPathData.n;
+    
+    // 计算有效命中半径
+    const R_eff = targetRadius + arrowWidth / 2;
+    
+    // 解析目标运动速度向量
+    let vTx = 0.0;
+    let vTy = 0.0;
+    
+    if (n === 1) {
+        const [x_path1, y_path1] = targetPathData.coords[0];
+        const moveSpeed = targetPathData.moveSpeed;
+        
+        const D_segment = Math.sqrt((x_path1 - xT0)**2 + (y_path1 - yT0)**2);
+        
+        if (D_segment > Number.EPSILON) {
+            vTx = (x_path1 - xT0) / D_segment * moveSpeed;
+            vTy = (y_path1 - yT0) / D_segment * moveSpeed;
+        }
+    }
+    
+    // 定义初始相对位置向量
+    const d_initial_x = xT0 - xF;
+    const d_initial_y = yT0 - yF;
+    
+    // 计算二次方程系数
+    const A = (vTx**2 + vTy**2) - arrowSpeed**2;
+    const B = 2 * (d_initial_x*vTx + d_initial_y*vTy - arrowSpeed**2 * arrowDelay);
+    const C = (d_initial_x**2 + d_initial_y**2) - (arrowSpeed**2 * arrowDelay**2) - R_eff**2;
+    
+    // 求解二次方程
+    let hitTimes = [];
+    const EPSILON = Number.EPSILON * 1e5;
+    
+    if (Math.abs(A) < EPSILON) {
+        if (Math.abs(B) < EPSILON) {
+            if (Math.abs(C) < EPSILON) return null;
+            else return null;
+        } else {
+            hitTimes.push(-C / B);
+        }
+    } else {
+        const discriminant = B**2 - 4*A*C;
+        if (discriminant < -EPSILON) return null;
+        else if (discriminant < EPSILON) hitTimes.push(-B / (2*A));
+        else {
+            hitTimes.push((-B + Math.sqrt(discriminant)) / (2*A));
+            hitTimes.push((-B - Math.sqrt(discriminant)) / (2*A));
+        }
+    }
+    
+    // 选择有效命中时间
+    let t_hit = Infinity;
+    let foundHit = false;
+    
+    for (const t_candidate of hitTimes) {
+        if (t_candidate > arrowDelay - EPSILON && t_candidate < t_hit) {
+            t_hit = t_candidate;
+            foundHit = true;
+        }
+    }
+    
+    if (!foundHit) return null;
+    
+    // 计算命中结果
+    const targetHitX = xT0 + vTx * t_hit;
+    const targetHitY = yT0 + vTy * t_hit;
+    
+    const D_proj_flight = arrowSpeed * (t_hit - arrowDelay);
+    
+    // 计算撞击点 (简化版)
+    const dx = targetHitX - xF;
+    const dy = targetHitY - yF;
+    const distance = Math.sqrt(dx**2 + dy**2);
+    
+    let impactX, impactY;
+    if (distance > 0) {
+        const ratio = D_proj_flight / distance;
+        impactX = xF + dx * ratio;
+        impactY = yF + dy * ratio;
+    } else {
+        impactX = targetHitX;
+        impactY = targetHitY;
+    }
+    
+    return {
+        hitTime: t_hit,
+        targetHitPos: [targetHitX, targetHitY],
+        impactPos: [impactX, impactY]
+    };
+}</code></pre>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>箭术弹道学分析工具 | 基于抛体运动物理原理 | © 2023 物理学与计算机科学教育平台</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM元素引用
+        const firingXInput = document.getElementById('firing-x');
+        const firingYInput = document.getElementById('firing-y');
+        const targetXInput = document.getElementById('target-x');
+        const targetYInput = document.getElementById('target-y');
+        const movementTypeSelect = document.getElementById('movement-type');
+        const pathXInput = document.getElementById('path-x');
+        const pathYInput = document.getElementById('path-y');
+        const moveSpeedInput = document.getElementById('move-speed');
+        const arrowSpeedInput = document.getElementById('arrow-speed');
+        const arrowDelayInput = document.getElementById('arrow-delay');
+        const targetRadiusInput = document.getElementById('target-radius');
+        const arrowWidthInput = document.getElementById('arrow-width');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const canvas = document.getElementById('simulation-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 初始化Canvas
+        function initCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            drawInitialState();
+        }
+        
+        // 绘制初始状态
+        function drawInitialState() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制网格
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            
+            const gridSize = 50;
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.stroke();
+            
+            // 添加坐标标签
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '12px Arial';
+            ctx.fillText('X', canvas.width - 20, canvas.height / 2 - 10);
+            ctx.fillText('Y', canvas.width / 2 + 10, 20);
+            
+            // 添加标题
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('箭术弹道学可视化模拟', canvas.width / 2, 30);
+            
+            // 添加提示
+            ctx.font = '14px Arial';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.fillText('输入参数后点击"计算弹道"按钮开始模拟', canvas.width / 2, canvas.height - 30);
+        }
+        
+        // 绘制模拟结果
+        function drawSimulation(result, params) {
+            const [firingX, firingY] = [parseFloat(firingXInput.value), parseFloat(firingYInput.value)];
+            const [targetX, targetY] = [parseFloat(targetXInput.value), parseFloat(targetYInput.value)];
+            const [pathX, pathY] = [parseFloat(pathXInput.value), parseFloat(pathYInput.value)];
+            
+            // 计算缩放和平移以使所有点都可见
+            const points = [
+                {x: firingX, y: firingY},
+                {x: targetX, y: targetY},
+                {x: pathX, y: pathY},
+                {x: result.targetHitPos[0], y: result.targetHitPos[1]},
+                {x: result.impactPos[0], y: result.impactPos[1]}
+            ];
+            
+            // 找到边界
+            let minX = Math.min(...points.map(p => p.x));
+            let maxX = Math.max(...points.map(p => p.x));
+            let minY = Math.min(...points.map(p => p.y));
+            let maxY = Math.max(...points.map(p => p.y));
+            
+            // 添加一些边距
+            const margin = 50;
+            minX -= margin;
+            maxX += margin;
+            minY -= margin;
+            maxY += margin;
+            
+            // 计算缩放比例
+            const rangeX = maxX - minX;
+            const rangeY = maxY - minY;
+            const scale = Math.min(canvas.width / rangeX, canvas.height / rangeY) * 0.9;
+            
+            // 转换坐标函数
+            const transformX = (x) => (x - minX) * scale;
+            const transformY = (y) => canvas.height - (y - minY) * scale;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制网格和坐标轴（略，同上）
+            
+            // 绘制目标路径
+            ctx.strokeStyle = 'rgba(231, 76, 60, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(transformX(targetX), transformY(targetY));
+            ctx.lineTo(transformX(pathX), transformY(pathY));
+            ctx.stroke();
+            
+            // 绘制目标移动轨迹
+            ctx.strokeStyle = 'rgba(231, 76, 60, 0.4)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 3]);
+            ctx.beginPath();
+            ctx.moveTo(transformX(targetX), transformY(targetY));
+            ctx.lineTo(transformX(result.targetHitPos[0]), transformY(result.targetHitPos[1]));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 绘制箭矢轨迹
+            ctx.strokeStyle = 'rgba(241, 196, 15, 0.7)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(transformX(firingX), transformY(firingY));
+            ctx.lineTo(transformX(result.impactPos[0]), transformY(result.impactPos[1]));
+            ctx.stroke();
+            
+            // 绘制发射点
+            ctx.fillStyle = '#3498db';
+            ctx.beginPath();
+            ctx.arc(transformX(firingX), transformY(firingY), 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.font = '12px Arial';
+            ctx.fillText('发射者', transformX(firingX) + 15, transformY(firingY));
+            
+            // 绘制目标初始位置
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(transformX(targetX), transformY(targetY), 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.fillText('目标起点', transformX(targetX) + 15, transformY(targetY));
+            
+            // 绘制路径点
+            ctx.fillStyle = '#9b59b6';
+            ctx.beginPath();
+            ctx.arc(transformX(pathX), transformY(pathY), 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.fillText('路径点', transformX(pathX) + 15, transformY(pathY));
+            
+            // 绘制命中点
+            ctx.fillStyle = '#2ecc71';
+            ctx.beginPath();
+            ctx.arc(transformX(result.targetHitPos[0]), transformY(result.targetHitPos[1]), 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.fillText('命中点', transformX(result.targetHitPos[0]) + 15, transformY(result.targetHitPos[1]));
+            
+            // 绘制撞击点
+            ctx.fillStyle = '#f1c40f';
+            ctx.beginPath();
+            ctx.arc(transformX(result.impactPos[0]), transformY(result.impactPos[1]), 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.fillText('撞击点', transformX(result.impactPos[0]) + 15, transformY(result.impactPos[1]));
+            
+            // 添加命中时间信息
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText(`命中时间: ${result.hitTime.toFixed(2)} 秒`, canvas.width / 2, 30);
+        }
+        
+        // 计算弹道
+        function calculateTrajectory() {
+            // 获取输入值
+            const firingPos = [
+                parseFloat(firingXInput.value),
+                parseFloat(firingYInput.value)
+            ];
+            
+            const targetInitialPos = [
+                parseFloat(targetXInput.value),
+                parseFloat(targetYInput.value)
+            ];
+            
+            const movementType = parseInt(movementTypeSelect.value);
+            
+            const targetPathData = {
+                n: movementType,
+                coords: [[
+                    parseFloat(pathXInput.value),
+                    parseFloat(pathYInput.value)
+                ]],
+                moveSpeed: parseFloat(moveSpeedInput.value)
+            };
+            
+            const arrowSpeed = parseFloat(arrowSpeedInput.value);
+            const arrowDelay = parseFloat(arrowDelayInput.value);
+            const targetRadius = parseFloat(targetRadiusInput.value);
+            const arrowWidth = parseFloat(arrowWidthInput.value);
+            
+            // 调用计算函数
+            const result = calculateArrowIntercept(
+                firingPos,
+                targetInitialPos,
+                targetPathData,
+                arrowSpeed,
+                arrowDelay,
+                targetRadius,
+                arrowWidth
+            );
+            
+            // 显示结果
+            displayResults(result);
+            
+            // 绘制结果
+            if (result) {
+                drawSimulation(result, {
+                    firingPos, targetInitialPos, targetPathData, 
+                    arrowSpeed, arrowDelay, targetRadius, arrowWidth
+                });
+            } else {
+                drawInitialState();
+            }
+        }
+        
+        // 显示计算结果
+        function displayResults(result) {
+            if (!result) {
+                resultsContainer.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-triangle"></i> 无法命中目标！请调整参数后重试。
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsContainer.innerHTML = `
+                <div class="success">
+                    <i class="fas fa-check-circle"></i> 成功计算弹道轨迹！
+                </div>
+                <div class="results">
+                    <div class="result-item">
+                        <div class="result-title"><i class="fas fa-clock"></i> 命中时间</div>
+                        <div class="result-value">${result.hitTime.toFixed(4)} 秒</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-title"><i class="fas fa-bullseye"></i> 目标命中位置</div>
+                        <div class="result-value">(${result.targetHitPos[0].toFixed(2)}, ${result.targetHitPos[1].toFixed(2)})</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-title"><i class="fas fa-crosshairs"></i> 实际撞击点</div>
+                        <div class="result-value">(${result.impactPos[0].toFixed(2)}, ${result.impactPos[1].toFixed(2)})</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-title"><i class="fas fa-ruler-combined"></i> 有效命中半径</div>
+                        <div class="result-value">${(targetRadiusInput.value + arrowWidthInput.value/2).toFixed(2)}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 重置表单
+        function resetForm() {
+            firingXInput.value = '0';
+            firingYInput.value = '0';
+            targetXInput.value = '100';
+            targetYInput.value = '50';
+            movementTypeSelect.value = '1';
+            pathXInput.value = '200';
+            pathYInput.value = '150';
+            moveSpeedInput.value = '20';
+            arrowSpeedInput.value = '40';
+            arrowDelayInput.value = '0.2';
+            targetRadiusInput.value = '10';
+            arrowWidthInput.value = '2';
+            
+            resultsContainer.innerHTML = '';
+            drawInitialState();
+        }
+        
+        // 弹道计算函数
+        function calculateArrowIntercept(firingPos, targetInitialPos, targetPathData, arrowSpeed, arrowDelay, targetRadius, arrowWidth) {
+            const [xF, yF] = firingPos;
+            const [xT0, yT0] = targetInitialPos;
+            const n = targetPathData.n;
+            
+            // 计算有效命中半径
+            const R_eff = targetRadius + arrowWidth / 2;
+            
+            // 解析目标运动速度向量
+            let vTx = 0.0;
+            let vTy = 0.0;
+            
+            if (n === 1) {
+                const [x_path1, y_path1] = targetPathData.coords[0];
+                const moveSpeed = targetPathData.moveSpeed;
+                
+                const D_segment = Math.sqrt((x_path1 - xT0)**2 + (y_path1 - yT0)**2);
+                
+                if (D_segment > Number.EPSILON) {
+                    vTx = (x_path1 - xT0) / D_segment * moveSpeed;
+                    vTy = (y_path1 - yT0) / D_segment * moveSpeed;
+                }
+            }
+            
+            // 定义初始相对位置向量
+            const d_initial_x = xT0 - xF;
+            const d_initial_y = yT0 - yF;
+            
+            // 计算二次方程系数
+            const A = (vTx**2 + vTy**2) - arrowSpeed**2;
+            const B = 2 * (d_initial_x*vTx + d_initial_y*vTy - arrowSpeed**2 * arrowDelay);
+            const C = (d_initial_x**2 + d_initial_y**2) - (arrowSpeed**2 * arrowDelay**2) - R_eff**2;
+            
+            // 求解二次方程
+            let hitTimes = [];
+            const EPSILON = Number.EPSILON * 1e5;
+            
+            if (Math.abs(A) < EPSILON) {
+                if (Math.abs(B) < EPSILON) {
+                    if (Math.abs(C) < EPSILON) return null;
+                    else return null;
+                } else {
+                    hitTimes.push(-C / B);
+                }
+            } else {
+                const discriminant = B**2 - 4*A*C;
+                if (discriminant < -EPSILON) return null;
+                else if (discriminant < EPSILON) hitTimes.push(-B / (2*A));
+                else {
+                    hitTimes.push((-B + Math.sqrt(discriminant)) / (2*A));
+                    hitTimes.push((-B - Math.sqrt(discriminant)) / (2*A));
+                }
+            }
+            
+            // 选择有效命中时间
+            let t_hit = Infinity;
+            let foundHit = false;
+            
+            for (const t_candidate of hitTimes) {
+                if (t_candidate > arrowDelay - EPSILON && t_candidate < t_hit) {
+                    t_hit = t_candidate;
+                    foundHit = true;
+                }
+            }
+            
+            if (!foundHit) return null;
+            
+            // 计算命中结果
+            const targetHitX = xT0 + vTx * t_hit;
+            const targetHitY = yT0 + vTy * t_hit;
+            
+            const D_proj_flight = arrowSpeed * (t_hit - arrowDelay);
+            
+            // 计算撞击点 (简化版)
+            const dx = targetHitX - xF;
+            const dy = targetHitY - yF;
+            const distance = Math.sqrt(dx**2 + dy**2);
+            
+            let impactX, impactY;
+            if (distance > 0) {
+                const ratio = D_proj_flight / distance;
+                impactX = xF + dx * ratio;
+                impactY = yF + dy * ratio;
+            } else {
+                impactX = targetHitX;
+                impactY = targetHitY;
+            }
+            
+            return {
+                hitTime: t_hit,
+                targetHitPos: [targetHitX, targetHitY],
+                impactPos: [impactX, impactY]
+            };
+        }
+        
+        // 事件监听
+        calculateBtn.addEventListener('click', calculateTrajectory);
+        resetBtn.addEventListener('click', resetForm);
+        movementTypeSelect.addEventListener('change', function() {
+            document.getElementById('path-data').style.display = 
+                this.value === '1' ? 'block' : 'none';
+        });
+        
+        // 初始化
+        window.addEventListener('load', function() {
+            initCanvas();
+            resetForm();
+        });
+        
+        window.addEventListener('resize', initCanvas);
+    </script>
+</body>
+</html>

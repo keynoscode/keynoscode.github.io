@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>箭術彈道學互動教學</title>
+    <style>
+        :root {
+            --primary-color: #4a6baf;
+            --secondary-color: #f0f8ff;
+            --accent-color: #ff7e5f;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --border-color: #ddd;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .theory-section, .interactive-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3a5a9f;
+        }
+        
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result-section h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .visualization {
+            height: 500px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--light-gray);
+        }
+        
+        .entity {
+            position: absolute;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .shooter {
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            z-index: 10;
+        }
+        
+        .target {
+            background-color: var(--accent-color);
+            z-index: 5;
+        }
+        
+        .arrow {
+            width: 2px;
+            height: 20px;
+            background-color: #333;
+            transform-origin: center;
+            z-index: 8;
+        }
+        
+        .trajectory {
+            position: absolute;
+            height: 2px;
+            background-color: rgba(0,0,0,0.2);
+            transform-origin: left center;
+            z-index: 1;
+        }
+        
+        .formula {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .tab-container {
+            margin-top: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-right: 5px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-button.active {
+            border-bottom-color: var(--primary-color);
+            background-color: var(--light-gray);
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .example-button {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .example-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .example-buttons {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>箭術彈道學互動教學</h1>
+            <p>探索拋體運動與命中計算的科學原理</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="content-grid">
+            <section class="theory-section">
+                <h2>理論基礎</h2>
+                
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="intro">簡介</button>
+                        <button class="tab-button" data-tab="formulas">數學模型</button>
+                        <button class="tab-button" data-tab="variables">變數定義</button>
+                    </div>
+                    
+                    <div id="intro" class="tab-content active">
+                        <p>本教學介紹如何在二維空間中計算箭矢命中移動或靜止目標邊緣的彈道學參數。我們將使用數學模型來預測：</p>
+                        <ul>
+                            <li>命中時間</li>
+                            <li>目標命中時的座標</li>
+                            <li>箭矢應指向的實際撞擊點</li>
+                        </ul>
+                        <p>這些計算考慮了箭矢速度、發射延遲、目標運動和物體大小等因素。</p>
+                    </div>
+                    
+                    <div id="formulas" class="tab-content">
+                        <h3>核心方程式</h3>
+                        <p>我們使用一元二次方程式來確定箭矢擊中目標有效邊緣的精確時間：</p>
+                        <div class="formula">At² + Bt + C = 0</div>
+                        
+                        <h4>係數計算</h4>
+                        <div class="formula">
+                            A = |V<sub>T</sub>|² - S<sub>arrow</sub>²<br>
+                            B = 2 · (d<sub>initial</sub> · V<sub>T</sub> - S<sub>arrow</sub>² · D<sub>delay</sub>)<br>
+                            C = |d<sub>initial</sub>|² - S<sub>arrow</sub>² · D<sub>delay</sub>² - R<sub>eff</sub>²
+                        </div>
+                        
+                        <h4>有效命中半徑</h4>
+                        <div class="formula">
+                            R<sub>eff</sub> = r + width/2
+                        </div>
+                    </div>
+                    
+                    <div id="variables" class="tab-content">
+                        <h3>變數定義</h3>
+                        <ul>
+                            <li><strong>P<sub>F</sub></strong>: 發射者座標 (x<sub>F</sub>, y<sub>F</sub>)</li>
+                            <li><strong>P<sub>T0</sub></strong>: 目標初始座標 (x<sub>T0</sub>, y<sub>T0</sub>)</li>
+                            <li><strong>r</strong>: 目標半徑</li>
+                            <li><strong>S<sub>arrow</sub></strong>: 箭矢速度 (單位距離/秒)</li>
+                            <li><strong>D<sub>delay</sub></strong>: 箭矢發射延遲 (秒)</li>
+                            <li><strong>width</strong>: 箭矢寬度</li>
+                            <li><strong>n</strong>: 目標移動次數 (0:靜止, 1:線性移動)</li>
+                            <li><strong>moveSpeed</strong>: 目標移動速度 (n=1時使用)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="interactive-section">
+                <h2>互動計算器</h2>
+                
+                <div class="example-buttons">
+                    <button class="example-button" data-example="static">靜止目標範例</button>
+                    <button class="example-button" data-example="moving">移動目標範例</button>
+                    <button class="example-button" data-example="delay">有延遲範例</button>
+                    <button class="example-button" data-example="miss">無法命中範例</button>
+                </div>
+                
+                <form id="calculation-form">
+                    <h3>發射者參數</h3>
+                    <div class="form-group">
+                        <label for="shooter-x">X 座標:</label>
+                        <input type="number" id="shooter-x" step="0.1" value="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shooter-y">Y 座標:</label>
+                        <input type="number" id="shooter-y" step="0.1" value="0" required>
+                    </div>
+                    
+                    <h3>箭矢參數</h3>
+                    <div class="form-group">
+                        <label for="arrow-speed">速度 (單位/秒):</label>
+                        <input type="number" id="arrow-speed" step="0.1" min="0.1" value="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="arrow-delay">發射延遲 (秒):</label>
+                        <input type="number" id="arrow-delay" step="0.1" min="0" value="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="arrow-width">箭矢寬度:</label>
+                        <input type="number" id="arrow-width" step="0.1" min="0" value="1" required>
+                    </div>
+                    
+                    <h3>目標參數</h3>
+                    <div class="form-group">
+                        <label for="target-x">初始 X 座標:</label>
+                        <input type="number" id="target-x" step="0.1" value="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-y">初始 Y 座標:</label>
+                        <input type="number" id="target-y" step="0.1" value="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-radius">目標半徑:</label>
+                        <input type="number" id="target-radius" step="0.1" min="0.1" value="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="movement-type">目標移動類型:</label>
+                        <select id="movement-type">
+                            <option value="0">靜止 (n=0)</option>
+                            <option value="1">線性移動 (n=1)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="moving-target-params" style="display: none;">
+                        <div class="form-group">
+                            <label for="target-move-speed">移動速度 (單位/秒):</label>
+                            <input type="number" id="target-move-speed" step="0.1" min="0" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="target-path-x">路徑點 X 座標:</label>
+                            <input type="number" id="target-path-x" step="0.1" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="target-path-y">路徑點 Y 座標:</label>
+                            <input type="number" id="target-path-y" step="0.1" value="10">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="calculate-btn">計算命中</button>
+                </form>
+                
+                <div id="result-section" class="result-section">
+                    <h3>計算結果</h3>
+                    <div id="result-content"></div>
+                </div>
+            </section>
+        </div>
+        
+        <section class="visualization-section" style="margin-top: 30px;">
+            <h2>視覺化模擬</h2>
+            <div class="visualization" id="simulation-canvas"></div>
+        </section>
+    </div>
+    
+    <script>
+        // 切換標籤頁
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // 移除所有active類
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // 添加active類到當前標籤
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // 顯示/隱藏移動目標參數
+        document.getElementById('movement-type').addEventListener('change', function() {
+            const movingParams = document.getElementById('moving-target-params');
+            if (this.value === '1') {
+                movingParams.style.display = 'block';
+            } else {
+                movingParams.style.display = 'none';
+            }
+        });
+        
+        // 範例按鈕
+        document.querySelectorAll('.example-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const example = this.getAttribute('data-example');
+                
+                switch(example) {
+                    case 'static':
+                        // 靜止目標範例
+                        document.getElementById('shooter-x').value = '0';
+                        document.getElementById('shooter-y').value = '0';
+                        document.getElementById('arrow-speed').value = '10';
+                        document.getElementById('arrow-delay').value = '0';
+                        document.getElementById('arrow-width').value = '1';
+                        document.getElementById('target-x').value = '10';
+                        document.getElementById('target-y').value = '0';
+                        document.getElementById('target-radius').value = '1';
+                        document.getElementById('movement-type').value = '0';
+                        document.getElementById('moving-target-params').style.display = 'none';
+                        break;
+                        
+                    case 'moving':
+                        // 移動目標範例
+                        document.getElementById('shooter-x').value = '0';
+                        document.getElementById('shooter-y').value = '0';
+                        document.getElementById('arrow-speed').value = '5';
+                        document.getElementById('arrow-delay').value = '0';
+                        document.getElementById('arrow-width').value = '1';
+                        document.getElementById('target-x').value = '10';
+                        document.getElementById('target-y').value = '0';
+                        document.getElementById('target-radius').value = '1';
+                        document.getElementById('movement-type').value = '1';
+                        document.getElementById('moving-target-params').style.display = 'block';
+                        document.getElementById('target-move-speed').value = '1';
+                        document.getElementById('target-path-x').value = '10';
+                        document.getElementById('target-path-y').value = '10';
+                        break;
+                        
+                    case 'delay':
+                        // 有延遲範例
+                        document.getElementById('shooter-x').value = '0';
+                        document.getElementById('shooter-y').value = '0';
+                        document.getElementById('arrow-speed').value = '10';
+                        document.getElementById('arrow-delay').value = '0.5';
+                        document.getElementById('arrow-width').value = '1';
+                        document.getElementById('target-x').value = '10';
+                        document.getElementById('target-y').value = '0';
+                        document.getElementById('target-radius').value = '1';
+                        document.getElementById('movement-type').value = '0';
+                        document.getElementById('moving-target-params').style.display = 'none';
+                        break;
+                        
+                    case 'miss':
+                        // 無法命中範例
+                        document.getElementById('shooter-x').value = '0';
+                        document.getElementById('shooter-y').value = '0';
+                        document.getElementById('arrow-speed').value = '1';
+                        document.getElementById('arrow-delay').value = '0';
+                        document.getElementById('arrow-width').value = '1';
+                        document.getElementById('target-x').value = '10';
+                        document.getElementById('target-y').value = '0';
+                        document.getElementById('target-radius').value = '1';
+                        document.getElementById('movement-type').value = '0';
+                        document.getElementById('moving-target-params').style.display = 'none';
+                        break;
+                }
+            });
+        });
+        
+        // 計算箭矢命中
+        document.getElementById('calculation-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 獲取輸入值
+            const firingPos = [
+                parseFloat(document.getElementById('shooter-x').value),
+                parseFloat(document.getElementById('shooter-y').value)
+            ];
+            
+            const targetInitialPos = [
+                parseFloat(document.getElementById('target-x').value),
+                parseFloat(document.getElementById('target-y').value)
+            ];
+            
+            const arrowSpeed = parseFloat(document.getElementById('arrow-speed').value);
+            const arrowDelay = parseFloat(document.getElementById('arrow-delay').value);
+            const targetRadius = parseFloat(document.getElementById('target-radius').value);
+            const arrowWidth = parseFloat(document.getElementById('arrow-width').value);
+            
+            const movementType = document.getElementById('movement-type').value;
+            
+            let targetPathData;
+            if (movementType === '1') {
+                targetPathData = {
+                    n: 1,
+                    coords: [
+                        [
+                            parseFloat(document.getElementById('target-path-x').value),
+                            parseFloat(document.getElementById('target-path-y').value)
+                        ]
+                    ],
+                    moveSpeed: parseFloat(document.getElementById('target-move-speed').value)
+                };
+            } else {
+                targetPathData = {
+                    n: 0,
+                    coords: [],
+                    moveSpeed: 0
+                };
+            }
+            
+            // 計算命中
+            const result = calculateArrowIntercept(
+                firingPos,
+                targetInitialPos,
+                targetPathData,
+                arrowSpeed,
+                arrowDelay,
+                targetRadius,
+                arrowWidth
+            );
+            
+            // 顯示結果
+            const resultSection = document.getElementById('result-section');
+            const resultContent = document.getElementById('result-content');
+            
+            if (result) {
+                resultSection.style.display = 'block';
+                resultContent.innerHTML = `
+                    <p><strong>命中時間:</strong> ${result.hitTime.toFixed(4)} 秒</p>
+                    <p><strong>目標命中位置:</strong> [${result.targetHitPos[0].toFixed(2)}, ${result.targetHitPos[1].toFixed(2)}]</p>
+                    <p><strong>實際撞擊點:</strong> [${result.impactPos[0].toFixed(2)}, ${result.impactPos[1].toFixed(2)}]</p>
+                    <p><strong>箭矢飛行距離:</strong> ${(arrowSpeed * (result.hitTime - arrowDelay)).toFixed(2)} 單位</p>
+                `;
+                
+                // 更新視覺化
+                visualizeSimulation(firingPos, targetInitialPos, targetPathData, result);
+            } else {
+                resultSection.style.display = 'block';
+                resultContent.innerHTML = `<p style="color: red;">無法命中目標 - 無有效解</p>`;
+                
+                // 清除視覺化
+                clearVisualization();
+            }
+        });
+        
+        // 計算函數 (與提供的JavaScript相同)
+        function calculateArrowIntercept(firingPos, targetInitialPos, targetPathData, arrowSpeed, arrowDelay, targetRadius, arrowWidth) {
+            const xF = firingPos[0];
+            const yF = firingPos[1];
+            const xT0 = targetInitialPos[0];
+            const yT0 = targetInitialPos[1];
+            const n = targetPathData.n;
+
+            // 1. 計算有效命中半徑 (R_eff)
+            const R_eff = targetRadius + arrowWidth / 2;
+
+            // 2. 解析目標運動速度向量 (V_T)
+            let vTx = 0.0;
+            let vTy = 0.0;
+
+            if (n === 1) {
+                const x_path1 = targetPathData.coords[0][0];
+                const y_path1 = targetPathData.coords[0][1];
+                const moveSpeed = targetPathData.moveSpeed;
+
+                const D_segment = Math.sqrt(Math.pow(x_path1 - xT0, 2) + Math.pow(y_path1 - yT0, 2));
+
+                if (D_segment > Number.EPSILON) { // 避免除以零
+                    vTx = (x_path1 - xT0) / D_segment * moveSpeed;
+                    vTy = (y_path1 - yT0) / D_segment * moveSpeed;
+                }
+            }
+
+            // 3. 定義初始相對位置向量 (d_initial)
+            const d_initial_x = xT0 - xF;
+            const d_initial_y = yT0 - yF;
+
+            // 4. 計算二次方程式係數 (A, B, C)
+            const A = (vTx * vTx + vTy * vTy) - (arrowSpeed * arrowSpeed);
+            const B = 2 * (d_initial_x * vTx + d_initial_y * vTy - arrowSpeed * arrowSpeed * arrowDelay);
+            const C = (d_initial_x * d_initial_x + d_initial_y * d_initial_y) - (arrowSpeed * arrowSpeed * arrowDelay * arrowDelay) - (R_eff * R_eff);
+
+            // 5. 求解二次方程式 At^2 + Bt + C = 0
+            let hitTimes = [];
+
+            const EPSILON = Number.EPSILON * 1e5; // 增加容錯以處理浮點數精度問題
+
+            if (Math.abs(A) < EPSILON) { // A 約等於 0，退化為線性方程
+                if (Math.abs(B) < EPSILON) { // B 也約等於 0
+                    if (Math.abs(C) < EPSILON) {
+                        // 理論上無窮多解，或無法確定唯一時間，視為無法確定命中時間
+                        return null;
+                    } else { // 0*t + C = 0, 無解
+                        return null;
+                    }
+                } else { // B 不為 0
+                    const t_sol = -C / B;
+                    hitTimes.push(t_sol);
+                }
+            } else { // 正常二次方程
+                const discriminant = B * B - 4 * A * C;
+                if (discriminant < -EPSILON) { // 無實數解 (判別式小於0，考慮浮點誤差)
+                    return null;
+                } else if (discriminant < EPSILON) { // 只有一個實數解 (判別式接近0)
+                    const t_sol = -B / (2 * A);
+                    hitTimes.push(t_sol);
+                } else { // 兩個實數解
+                    const t_sol1 = (-B + Math.sqrt(discriminant)) / (2 * A);
+                    const t_sol2 = (-B - Math.sqrt(discriminant)) / (2 * A);
+                    hitTimes.push(t_sol1, t_sol2);
+                }
+            }
+
+            // 6. 選擇最小且大於 arrowDelay 的命中時間 (t_hit)
+            let t_hit = Number.POSITIVE_INFINITY;
+            let foundHit = false;
+
+            for (const t_candidate of hitTimes) {
+                // 確保時間大於延遲，且有效
+                if (t_candidate > arrowDelay - EPSILON) {
+                    if (t_candidate < t_hit) {
+                        t_hit = t_candidate;
+                        foundHit = true;
+                    }
+                }
+            }
+            
+            if (!foundHit || t_hit === Number.POSITIVE_INFINITY) {
+                return null; // 無法命中
+            }
+
+            // 7. 計算命中結果
+            const finalHitTime = t_hit;
+
+            // 箭矢命中目標時，目標的座標
+            const targetHitX = xT0 + vTx * finalHitTime;
+            const targetHitY = yT0 + vTy * finalHitTime;
+            const finalTargetHitPos = [targetHitX, targetHitY];
+
+            // 朝向座標(x, y)發射箭矢時，箭矢實際的撞擊點 (impactPos)
+            const D_proj_flight = arrowSpeed * (finalHitTime - arrowDelay);
+
+            let impactPosX, impactPosY;
+
+            if (D_proj_flight < EPSILON) {
+                // 箭矢幾乎不飛行，撞擊點就是目標的命中位置
+                impactPosX = targetHitX;
+                impactPosY = targetHitY;
+            } else {
+                // C1 (發射者為圓心), R1 (D_proj_flight)
+                // C2 (目標命中點為圓心), R2 (R_eff)
+                // D (兩圓心距離) = L_between_centers
+                const L_between_centers_x = targetHitX - xF;
+                const L_between_centers_y = targetHitY - yF;
+                const L_between_centers = Math.sqrt(L_between_centers_x * L_between_centers_x + L_between_centers_y * L_between_centers_y);
+
+                if (L_between_centers < EPSILON) { // 圓心重合
+                    impactPosX = targetHitX;
+                    impactPosY = targetHitY;
+                } else {
+                    // 標準圓與圓交點公式
+                    const d = L_between_centers;
+                    const r1 = D_proj_flight;
+                    const r2 = R_eff;
+
+                    const a = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
+                    const h = Math.sqrt(Math.max(0, r1 * r1 - a * a)); // Math.max(0, ...) 避免負數因浮點誤差導致 NaN
+
+                    const p2x = xF + a * (targetHitX - xF) / d;
+                    const p2y = yF + a * (targetHitY - yF) / d;
+
+                    // 兩個可能的交點
+                    const intersect1X = p2x + h * (targetHitY - yF) / d;
+                    const intersect1Y = p2y - h * (targetHitX - xF) / d;
+                    const intersect2X = p2x - h * (targetHitY - yF) / d;
+                    const intersect2Y = p2y + h * (targetHitX - xF) / d;
+
+                    // 選擇一個合理的撞擊點
+                    impactPosX = intersect1X;
+                    impactPosY = intersect1Y;
+                }
+            }
+            
+            return {
+                hitTime: finalHitTime,
+                targetHitPos: finalTargetHitPos,
+                impactPos: [impactPosX, impactPosY]
+            };
+        }
+        
+        // 視覺化模擬
+        function visualizeSimulation(firingPos, targetInitialPos, targetPathData, result) {
+            const canvas = document.getElementById('simulation-canvas');
+            canvas.innerHTML = '';
+            
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+            
+            // 計算座標縮放比例
+            const allPoints = [
+                firingPos,
+                targetInitialPos,
+                result.targetHitPos,
+                result.impactPos
+            ];
+            
+            if (targetPathData.n === 1) {
+                allPoints.push(targetPathData.coords[0]);
+            }
+            
+            // 找出最小和最大的x,y值
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            allPoints.forEach(point => {
+                minX = Math.min(minX, point[0]);
+                maxX = Math.max(maxX, point[0]);
+                minY = Math.min(minY, point[1]);
+                maxY = Math.max(maxY, point[1]);
+            });
+            
+            // 添加一些邊距
+            const margin = 2;
+            minX -= margin;
+            maxX += margin;
+            minY -= margin;
+            maxY += margin;
+            
+            // 計算縮放比例
+            const scaleX = width / (maxX - minX);
+            const scaleY = height / (maxY - minY);
+            const scale = Math.min(scaleX, scaleY) * 0.9; // 使用較小的比例並留一些邊距
+            
+            // 座標轉換函數
+            function transformX(x) {
+                return (x - minX) * scale;
+            }
+            
+            function transformY(y) {
+                return height - (y - minY) * scale; // 反轉Y軸，因為網頁座標系Y向下
+            }
+            
+            // 繪製發射者
+            const shooter = document.createElement('div');
+            shooter.className = 'entity shooter';
+            shooter.style.left = transformX(firingPos[0]) + 'px';
+            shooter.style.top = transformY(firingPos[1]) + 'px';
+            shooter.title = `發射者 (${firingPos[0].toFixed(1)}, ${firingPos[1].toFixed(1)})`;
+            canvas.appendChild(shooter);
+            
+            // 繪製目標初始位置
+            const initialTarget = document.createElement('div');
+            initialTarget.className = 'entity target';
+            initialTarget.style.left = transformX(targetInitialPos[0]) + 'px';
+            initialTarget.style.top = transformY(targetInitialPos[1]) + 'px';
+            initialTarget.style.width = (targetPathData.targetRadius * 2 * scale) + 'px';
+            initialTarget.style.height = (targetPathData.targetRadius * 2 * scale) + 'px';
+            initialTarget.title = `目標初始位置 (${targetInitialPos[0].toFixed(1)}, ${targetInitialPos[1].toFixed(1)})`;
+            canvas.appendChild(initialTarget);
+            
+            // 繪製目標命中位置
+            const hitTarget = document.createElement('div');
+            hitTarget.className = 'entity target';
+            hitTarget.style.left = transformX(result.targetHitPos[0]) + 'px';
+            hitTarget.style.top = transformY(result.targetHitPos[1]) + 'px';
+            hitTarget.style.width = (targetPathData.targetRadius * 2 * scale) + 'px';
+            hitTarget.style.height = (targetPathData.targetRadius * 2 * scale) + 'px';
+            hitTarget.title = `目標命中位置 (${result.targetHitPos[0].toFixed(1)}, ${result.targetHitPos[1].toFixed(1)})`;
+            hitTarget.style.opacity = '0.7';
+            canvas.appendChild(hitTarget);
+            
+            // 繪製撞擊點
+            const impactPoint = document.createElement('div');
+            impactPoint.className = 'entity';
+            impactPoint.style.left = transformX(result.impactPos[0]) + 'px';
+            impactPoint.style.top = transformY(result.impactPos[1]) + 'px';
+            impactPoint.style.width = '6px';
+            impactPoint.style.height = '6px';
+            impactPoint.style.backgroundColor = '#333';
+            impactPoint.title = `撞擊點 (${result.impactPos[0].toFixed(1)}, ${result.impactPos[1].toFixed(1)})`;
+            canvas.appendChild(impactPoint);
+            
+            // 繪製箭矢軌跡
+            const arrow = document.createElement('div');
+            arrow.className = 'arrow';
+            arrow.style.left = transformX(firingPos[0]) + 'px';
+            arrow.style.top = transformY(firingPos[1]) + 'px';
+            
+            // 計算角度
+            const dx = result.impactPos[0] - firingPos[0];
+            const dy = result.impactPos[1] - firingPos[1];
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            
+            arrow.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+            arrow.style.width = (Math.sqrt(dx*dx + dy*dy) * scale + 'px';
+            canvas.appendChild(arrow);
+            
+            // 繪製目標移動軌跡 (如果有)
+            if (targetPathData.n === 1) {
+                const pathEndX = targetInitialPos[0] + targetPathData.coords[0][0];
+                const pathEndY = targetInitialPos[1] + targetPathData.coords[0][1];
+                
+                const trajectory = document.createElement('div');
+                trajectory.className = 'trajectory';
+                trajectory.style.left = transformX(targetInitialPos[0]) + 'px';
+                trajectory.style.top = transformY(targetInitialPos[1]) + 'px';
+                
+                const trajDx = pathEndX - targetInitialPos[0];
+                const trajDy = pathEndY - targetInitialPos[1];
+                const trajLength = Math.sqrt(trajDx*trajDx + trajDy*trajDy);
+                const trajAngle = Math.atan2(trajDy, trajDx) * 180 / Math.PI;
+                
+                trajectory.style.width = trajLength * scale + 'px';
+                trajectory.style.transform = `rotate(${trajAngle}deg)`;
+                canvas.appendChild(trajectory);
+                
+                // 繪製路徑點
+                const pathPoint = document.createElement('div');
+                pathPoint.className = 'entity';
+                pathPoint.style.left = transformX(targetPathData.coords[0][0]) + 'px';
+                pathPoint.style.top = transformY(targetPathData.coords[0][1]) + 'px';
+                pathPoint.style.width = '8px';
+                pathPoint.style.height = '8px';
+                pathPoint.style.backgroundColor = '#4CAF50';
+                pathPoint.title = `路徑點 (${targetPathData.coords[0][0].toFixed(1)}, ${targetPathData.coords[0][1].toFixed(1)})`;
+                canvas.appendChild(pathPoint);
+            }
+            
+            // 添加說明文字
+            const info = document.createElement('div');
+            info.style.position = 'absolute';
+            info.style.bottom = '10px';
+            info.style.left = '10px';
+            info.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            info.style.padding = '5px';
+            info.style.borderRadius = '3px';
+            info.style.fontSize = '12px';
+            info.innerHTML = `
+                <div>黑色圓點: 發射者</div>
+                <div>橙色圓圈: 目標 (半透明為命中時位置)</div>
+                <div>黑點: 撞擊點</div>
+                <div>黑色線條: 箭矢軌跡</div>
+                ${targetPathData.n === 1 ? '<div>綠色圓點: 路徑點</div><div>灰色線條: 目標移動軌跡</div>' : ''}
+            `;
+            canvas.appendChild(info);
+        }
+        
+        function clearVisualization() {
+            const canvas = document.getElementById('simulation-canvas');
+            canvas.innerHTML = '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #666;">無有效命中結果</div>';
+        }
+    </script>
+</body>
+</html>
