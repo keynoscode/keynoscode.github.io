@@ -1,5 +1,5 @@
-// 喵嗚！♡ 這裡就是我們道場的靈魂與心跳 v2.1！
-// 所有的計算魔法和繪圖奇蹟都在這裡發生，這次還新增了情境分析喔！
+// 喵嗚！♡ 這裡就是我們道場的靈魂與心跳 v2.2！
+// 本次升級：情境分析的語言變得更豐富了喔！
 
 document.addEventListener('DOMContentLoaded', () => {
     // 核心函式 v2.0 維持不變，它的物理模型依然完美！
@@ -73,20 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('visualization-canvas');
     const ctx = canvas.getContext('2d');
 
-    // 繪圖的主函式，現在會接收額外的 hitContext 參數！
+    // 繪圖的主函式，它接收額外的 hitContext 參數！
     function drawVisualization(inputs, result, hitContext) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const { firingPos, targetInitialPos, targetPathData, targetRadius, arrowWidth } = inputs;
         const targetPathEnd = targetPathData.coords[0];
         
-        // 收集所有關鍵點用於自動縮放
         const allPoints = [firingPos, targetInitialPos, targetPathEnd];
         if (result) {
             allPoints.push(result.targetHitPos, result.impactPos);
         }
         
-        // 自動縮放和定位座標系的魔法...
         let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
         allPoints.forEach(([x, y]) => {
             minX = Math.min(minX, x); minY = Math.min(minY, y);
@@ -105,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const R_eff_scaled = (targetRadius + arrowWidth / 2) * scale;
         
-        // 繪製發射點
         ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--shooter-color');
         ctx.font = `${Math.max(12, scale * 2)}px sans-serif`;
         const [shooterX, shooterY] = worldToCanvas(firingPos[0], firingPos[1]);
@@ -114,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
         ctx.fillText("Shooter", shooterX + 8, shooterY + 4);
 
-        // 繪製目標初始點 (T0)
         const [t0X, t0Y] = worldToCanvas(targetInitialPos[0], targetInitialPos[1]);
         ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--target-color');
         ctx.beginPath();
@@ -122,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.stroke();
         ctx.fillText("T0", t0X + R_eff_scaled + 2, t0Y + R_eff_scaled + 2);
 
-        // 繪製計畫路徑終點 (T_end)
         const [tEndX, tEndY] = worldToCanvas(targetPathEnd[0], targetPathEnd[1]);
         ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--path-color');
         ctx.beginPath();
@@ -130,35 +125,30 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.stroke();
         ctx.fillText("T_end", tEndX + 5, tEndY - 5);
 
-        // 根據命中情境繪製路徑！
         if (result) {
             const [hitX, hitY] = worldToCanvas(result.targetHitPos[0], result.targetHitPos[1]);
             
             if(hitContext.type === 'within_path') {
-                // 情境一：命中在計畫路徑內
                 ctx.beginPath();
                 ctx.setLineDash([5, 5]);
                 ctx.moveTo(t0X, t0Y);
-                ctx.lineTo(hitX, hitY); // 只畫到命中點
+                ctx.lineTo(hitX, hitY);
                 ctx.stroke();
             } else {
-                // 情境二：命中在延伸軌跡上
-                // 1. 繪製完整的計畫路徑（虛線）
                 ctx.beginPath();
                 ctx.setLineDash([5, 5]);
                 ctx.moveTo(t0X, t0Y);
                 ctx.lineTo(tEndX, tEndY);
                 ctx.stroke();
-                // 2. 繪製延伸軌跡（點線）
+                
                 ctx.beginPath();
                 ctx.setLineDash([2, 3]);
                 ctx.moveTo(tEndX, tEndY);
                 ctx.lineTo(hitX, hitY);
                 ctx.stroke();
             }
-            ctx.setLineDash([]); // 恢復實線
+            ctx.setLineDash([]);
 
-            // 繪製箭矢路徑
             const [impactX, impactY] = worldToCanvas(result.impactPos[0], result.impactPos[1]);
             ctx.beginPath();
             ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--arrow-color');
@@ -166,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineTo(impactX, impactY);
             ctx.stroke();
             
-            // 繪製命中時的目標
             ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--target-color');
             ctx.beginPath();
             ctx.arc(hitX, hitY, R_eff_scaled, 0, 2 * Math.PI);
@@ -202,8 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const [xTEnd, yTEnd] = inputs.targetPathData.coords[0];
             const moveSpeed = inputs.targetPathData.moveSpeed;
             const dist_segment = Math.sqrt(Math.pow(xTEnd - xT0, 2) + Math.pow(yTEnd - yT0, 2));
-            
-            // 喵娜的貼心修正：處理路徑長度為0的邊界情況
             const t_segment = (moveSpeed > 1e-6 && dist_segment > 1e-6) ? dist_segment / moveSpeed : 0;
 
             if (hitTime <= t_segment || t_segment === 0) {
@@ -219,8 +206,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const extended_time = hitTime - t_segment;
                 const extended_dist = extended_time * moveSpeed;
                 hitContext = { type: 'extended_path' };
+                // ⭐⭐⭐ 這就是我們本次升級的核心！⭐⭐⭐
                 resultsHTML = `<b>命中成功！♡</b>
-<span style="color: var(--warning-color);"><b>情境分析: 命中於延伸軌跡上！</b></span>
+<span style="color: var(--warning-color);"><b>情境分析: 箭矢未能在計畫路徑內追上目標，但成功在延伸軌跡上命中！</b></span>
 ------------------------------------
 命中時間 (t_hit): ${hitTime.toFixed(4)} s
 計畫路徑時長: ${t_segment.toFixed(4)} s
