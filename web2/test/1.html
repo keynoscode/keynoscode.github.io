@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>箭術彈道學互動教學</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="1.css"><!-- 可自訂樣式 -->
+</head>
+<body>
+  <header>
+    <h1>箭術彈道學分析：拋體運動命中計算詳解</h1>
+    <nav>
+      <a href="#theory">理論說明</a>
+      <a href="#calculator">互動計算</a>
+      <a href="#visualization">視覺化</a>
+      <a href="#code">程式碼</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="theory">
+      <h2>理論說明</h2>
+      <p>本網站介紹如何計算箭矢命中移動或靜止目標的彈道學參數，包含數學模型、公式推導與應用情境。</p>
+      <ul>
+        <li>基礎參數定義與有效半徑計算</li>
+        <li>目標運動路徑解析</li>
+        <li>命中時間計算</li>
+        <li>命中結果報告</li>
+      </ul>
+      <details>
+        <summary>點擊展開詳細數學推導</summary>
+        <pre>
+有效半徑：R_eff = r + width/2
+命中時間：解 At^2 + Bt + C = 0
+...
+        </pre>
+      </details>
+    </section>
+
+    <section id="calculator">
+      <h2>互動計算器</h2>
+      <form id="ballistics-form">
+        <label>發射者座標: <input type="number" step="any" id="xF" value="0">, <input type="number" step="any" id="yF" value="0"></label><br>
+        <label>目標初始座標: <input type="number" step="any" id="xT0" value="10">, <input type="number" step="any" id="yT0" value="0"></label><br>
+        <label>目標半徑 r: <input type="number" step="any" id="targetRadius" value="1"></label><br>
+        <label>箭矢速度 S_arrow: <input type="number" step="any" id="arrowSpeed" value="10"></label><br>
+        <label>箭矢寬度 width: <input type="number" step="any" id="arrowWidth" value="1"></label><br>
+        <label>發射延遲 D_delay: <input type="number" step="any" id="arrowDelay" value="0"></label><br>
+        <label>目標移動類型:
+          <select id="moveType">
+            <option value="0">靜止</option>
+            <option value="1">線性移動</option>
+          </select>
+        </label><br>
+        <div id="moveParams" style="display:none;">
+          <label>路徑點: <input type="number" step="any" id="xPath1" value="10">, <input type="number" step="any" id="yPath1" value="10"></label><br>
+          <label>目標速度 moveSpeed: <input type="number" step="any" id="moveSpeed" value="1"></label><br>
+        </div>
+        <button type="submit">計算命中</button>
+      </form>
+      <div id="calcResult"></div>
+    </section>
+
+    <section id="visualization">
+      <h2>視覺化</h2>
+      <canvas id="ballistics-canvas" width="500" height="400" style="border:1px solid #ccc;"></canvas>
+      <div>（圖中顯示發射點、目標運動、箭矢飛行與命中點）</div>
+    </section>
+
+    <section id="code">
+      <h2>核心程式碼</h2>
+      <pre><code id="js-code"></code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 箭術彈道學教學網站</p>
+  </footer>
+  <script src="ballistics.js"></script>
+</body>
+</html>

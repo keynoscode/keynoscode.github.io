@@ -1,0 +1,11 @@
+body { font-family: "Noto Sans TC", Arial, sans-serif; margin: 0; background: #f7f7fa; }
+header { background: #2d3e50; color: #fff; padding: 1em 2em; }
+header h1 { margin: 0; }
+nav a { color: #fff; margin-right: 1em; text-decoration: none; }
+main { max-width: 800px; margin: 2em auto; background: #fff; padding: 2em; border-radius: 8px; }
+section { margin-bottom: 2em; }
+label { display: block; margin: 0.5em 0; }
+button { padding: 0.5em 1em; }
+#calcResult { margin-top: 1em; font-weight: bold; }
+canvas { margin-top: 1em; background: #fff; }
+footer { text-align: center; color: #888; margin: 2em 0 0 0; }
