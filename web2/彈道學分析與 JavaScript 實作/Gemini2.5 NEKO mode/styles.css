@@ -1,0 +1,233 @@
+/* styles.css */
+:root {
+    --bg-color: #1a1a2e;
+    --panel-color: #1f2a40;
+    --text-color: #e0e0e0;
+    --header-color: #ffffff;
+    --accent-color: #4a90e2;
+    --accent-hover: #63a4ff;
+    --error-color: #ff6b6b;
+    --success-color: #63ff83;
+    --border-color: #3b4a68;
+    --warn-color: #ffeb3b;
+}
+
+body {
+    font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 15px;
+}
+
+header h1 {
+    color: var(--header-color);
+    margin: 0;
+    font-size: 2.5em;
+}
+header p {
+    color: var(--accent-color);
+    font-size: 1.1em;
+}
+
+main {
+    display: flex;
+    gap: 20px;
+}
+
+.controls-container {
+    flex: 1;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.visualization-container {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--panel-color);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.panel {
+    background-color: var(--panel-color);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+h2 {
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+legend {
+    color: var(--accent-color);
+    padding: 0 10px;
+    font-weight: bold;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+input[type="number"], input[type="text"] {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.radio-group label {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+button {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    flex-grow: 1;
+}
+
+#calc-button {
+     background-color: var(--accent-color);
+     color: var(--header-color);
+}
+#calc-button:hover {
+    background-color: var(--accent-hover);
+}
+
+#reset-button {
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+#reset-button:hover {
+     background-color: var(--accent-color);
+     color: var(--header-color);
+}
+
+#results {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    background-color: #111;
+    white-space: pre-wrap;
+    min-height: 50px;
+    line-height: 1.5;
+}
+.results-error { color: var(--error-color); }
+.results-success { color: var(--success-color); }
+.results-info { color: var(--text-color); }
+
+#trajectory-canvas {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    background-color: #0d121c;
+    border-radius: 6px;
+    cursor: crosshair;
+}
+
+.legend {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    font-size: 0.9em;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.legend-color {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* 喵娜新增的 Tooltip 樣式！♡ */
+#tooltip {
+    position: absolute;
+    display: none;
+    background-color: rgba(20, 25, 40, 0.9);
+    border: 1px solid var(--accent-color);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 0.9em;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    color: var(--text-color);
+    pointer-events: none; /* 讓滑鼠可以穿透它！ */
+    white-space: pre;
+    z-index: 100;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+@media (max-width: 900px) {
+    main {
+        flex-direction: column;
+    }
+    .controls-container {
+        min-width: unset;
+    }
+}
