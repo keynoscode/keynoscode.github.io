@@ -1,4 +1,4 @@
-/* 讓我們的道場變得漂漂亮亮！♡ */
+/* 讓我們的道場變得漂漂亮亮！♡ v2.2 版無需修改樣式 */
 :root {
     --bg-color: #1a1c2c;
     --primary-color: #2e324a;
@@ -9,6 +9,9 @@
     --target-color: #ff6347;
     --path-color: rgba(255, 255, 255, 0.3);
     --arrow-color: #ffdd00;
+    --success-color: #39e600;
+    --warning-color: #ff9900;
+    --grid-color: rgba(123, 104, 238, 0.15); /* 新增網格顏色 */
 }
 
 body {
@@ -125,12 +128,11 @@ button[type="submit"]:hover {
     font-family: 'Courier New', Courier, monospace;
     white-space: pre-wrap;
     word-wrap: break-word;
+    line-height: 1.8;
 }
 
 #visualization-canvas {
-    background-color: black;
-    border: 2px solid var(--accent-color);
+    background-color: var(--primary-color); /* 캔버스 배경색 설정 */
     border-radius: 8px;
-    width: 100%;
-    height: auto;
+    border: 1px solid var(--accent-color);
 }
