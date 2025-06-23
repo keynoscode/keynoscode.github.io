@@ -1,0 +1,136 @@
+/* 讓我們的道場變得漂漂亮亮！♡ */
+:root {
+    --bg-color: #1a1c2c;
+    --primary-color: #2e324a;
+    --text-color: #e0e0e0;
+    --accent-color: #7b68ee;
+    --accent-hover: #9370db;
+    --shooter-color: #00ffdd;
+    --target-color: #ff6347;
+    --path-color: rgba(255, 255, 255, 0.3);
+    --arrow-color: #ffdd00;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+    margin: 0;
+    padding: 1rem;
+    line-height: 1.6;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.controls-and-theory {
+    flex: 1;
+    min-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.visualization-container {
+    flex: 2;
+    min-width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+section {
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    color: var(--accent-color);
+    margin-top: 0;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+fieldset {
+    border: 1px dashed var(--text-color);
+    border-radius: 6px;
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+legend {
+    color: var(--accent-color);
+    padding: 0 0.5rem;
+    font-weight: bold;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+input[type="number"] {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    padding: 8px;
+    width: 80px;
+}
+
+button[type="submit"] {
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--accent-hover);
+}
+
+#results-output {
+    background-color: var(--bg-color);
+    padding: 1rem;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#visualization-canvas {
+    background-color: black;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+}
