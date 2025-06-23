@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喵娜的箭術彈道學互動模擬器 v3.0</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-wcIxkf4k558AjM3Yz3BBFQUbk/zgIYC2R0QpeeYb+TwlBVMrlgLqwRjRtGZiK7ww" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoBPJpTUs74ddyc4bFZSM1TVlQDA60VBbJS0oA934VSz82sBx1X7kSx2ATBDIyd" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="initializeApp()"></script>
+
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --panel-color: #1f2a40;
+            --text-color: #e0e0e0;
+            --header-color: #ffffff;
+            --accent-color: #4a90e2;
+            --accent-hover: #63a4ff;
+            --error-color: #ff6b6b;
+            --success-color: #63ff83;
+            --border-color: #3b4a68;
+            --warn-color: #ffeb3b;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 15px;
+        }
+
+        header h1 {
+            color: var(--header-color);
+            margin: 0;
+            font-size: 2.5em;
+        }
+        header p {
+            color: var(--accent-color);
+            font-size: 1.1em;
+        }
+
+        main {
+            display: flex;
+            gap: 20px;
+        }
+
+        .controls-container {
+            flex: 1;
+            min-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .visualization-container {
+            position: relative; /* For tooltip positioning */
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--panel-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .panel {
+            background-color: var(--panel-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Tooltip styles */
+        #canvas-tooltip {
+            position: absolute;
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-color);
+            font-size: 0.9em;
+            pointer-events: none; /* So it doesn't interfere with mouse events */
+            white-space: pre-wrap;
+            z-index: 100;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        fieldset {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        legend {
+            color: var(--accent-color);
+            padding: 0 10px;
+            font-weight: bold;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        input[type="number"] {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .radio-group label { margin-right: 15px; cursor: pointer; }
+        .button-group { display: flex; gap: 10px; margin-top: 10px; }
+        
+        button {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            flex-grow: 1;
+        }
+        
+        #calc-button {
+             background-color: var(--accent-color);
+             color: var(--header-color);
+        }
+        #calc-button:hover { background-color: var(--accent-hover); }
+        
+        #reset-button {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+        }
+        #reset-button:hover {
+             background-color: var(--accent-color);
+             color: var(--header-color);
+        }
+        
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: #111;
+            white-space: pre-wrap;
+            min-height: 50px;
+            line-height: 1.5;
+        }
+        .results-error { color: var(--error-color); }
+        .results-success { color: var(--success-color); }
+        .results-info { color: var(--text-color); }
+
+        #trajectory-canvas {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1/1;
+            background-color: #0d121c;
+            border-radius: 6px;
+            cursor: crosshair;
+        }
+        
+        .legend {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 900px) {
+            main { flex-direction: column; }
+            .controls-container { min-width: unset; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>箭術彈道學互動模擬器 v3.0</h1>
+            <p>一個基於拋體運動學，計算並視覺化箭矢命中解的教育工具</p>
+        </header>
+
+        <main>
+            <div class="controls-container">
+                <div class="panel">
+                    <h2>🧮 參數輸入</h2>
+                    <form id="calculator-form" onsubmit="return false;">
+                        <fieldset>
+                            <legend>發射者 (Shooter)</legend>
+                             <div class="form-grid">
+                                <div class="input-group">
+                                    <label for="fire-x">座標 X</label>
+                                    <input type="number" id="fire-x" value="0" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label for="fire-y">座標 Y</label>
+                                    <input type="number" id="fire-y" value="0" step="any">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>目標 (Target)</legend>
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label for="target-x">初始座標 X</label>
+                                    <input type="number" id="target-x" value="14" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label for="target-y">初始座標 Y</label>
+                                    <input type="number" id="target-y" value="15" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label for="target-radius">半徑 (r)</label>
+                                    <input type="number" id="target-radius" value="1" min="0" step="any">
+                                </div>
+                            </div>
+                            <div class="radio-group" style="margin-top:15px;">
+                                <label><input type="radio" name="target-movement" value="0" checked> 靜止</label>
+                                <label><input type="radio" name="target-movement" value="1"> 線性移動</label>
+                            </div>
+                            <div id="movement-params" class="form-grid" style="display:none; margin-top:15px;">
+                                 <div class="input-group">
+                                    <label for="target-path-x">路徑點 X</label>
+                                    <input type="number" id="target-path-x" value="80" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label for="target-path-y">路徑點 Y</label>
+                                    <input type="number" id="target-path-y" value="150" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label for="target-speed">移動速度</label>
+                                    <input type="number" id="target-speed" value="15" min="0" step="any">
+                                </div>
+                            </div>
+                        </fieldset>
+                        
+                        <fieldset>
+                            <legend>箭矢 (Arrow)</legend>
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label for="arrow-speed">速度 (S_arrow)</label>
+                                    <input type="number" id="arrow-speed" value="1.01" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label for="arrow-delay">發射延遲 (D_delay)</label>
+                                    <input type="number" id="arrow-delay" value="10" min="0" step="any">
+                                </div>
+                                <div class="input-group">
+                                    <label for="arrow-width">寬度 (width)</label>
+                                    <input type="number" id="arrow-width" value="1" min="0" step="any">
+                                </div>
+                            </div>
+                        </fieldset>
+                        
+                        <div class="button-group">
+                             <button type="button" id="reset-button">重設為預設值</button>
+                             <button type="submit" id="calc-button">計算並視覺化</button>
+                        </div>
+                    </form>
+                    
+                    <div id="results" class="results-info">請輸入參數並點擊計算...</div>
+                </div>
+            </div>
+
+            <div class="visualization-container">
+                <div id="canvas-tooltip"></div>
+                <h2>🛰️ 視覺化模擬</h2>
+                <canvas id="trajectory-canvas" width="600" height="600"></canvas>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color" style="background-color: var(--success-color);"></div><span>發射者</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background-color: var(--accent-color); opacity: 0.5;"></div><span>目標 (初始)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background-color: var(--accent-color);"></div><span>目標 (命中)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background-color: var(--error-color);"></div><span>箭矢路徑</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background-color: var(--warn-color); border-radius: 2px;"></div><span>撞擊點</span></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function initializeApp() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false},
+                    {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}
+                ]
+            });
+            
+            const form = document.getElementById('calculator-form');
+            const resultsDiv = document.getElementById('results');
+            const canvas = document.getElementById('trajectory-canvas');
+            const tooltip = document.getElementById('canvas-tooltip');
+            const ctx = canvas.getContext('2d');
+            const movementRadios = document.querySelectorAll('input[name="target-movement"]');
+            const movementParamsDiv = document.getElementById('movement-params');
+            const resetButton = document.getElementById('reset-button');
+
+            let lastResult = null; // Store last simulation result for tooltip
+            let sceneObjects = []; // Store objects for hit testing
+
+            // --- 核心計算引擎 ---
+            function calculateArrowIntercept(inputs) {
+                const { firingPos, targetInitialPos, targetPathData, arrowSpeed, arrowDelay, targetRadius, arrowWidth } = inputs;
+                const xF = firingPos[0], yF = firingPos[1];
+                const xT0 = targetInitialPos[0], yT0 = targetInitialPos[1];
+                const n = targetPathData.n;
+                const R_eff = targetRadius + arrowWidth / 2;
+
+                // --- 修正 #1: 對靜態目標使用獨立、更簡單的物理模型 ---
+                if (n === 0) {
+                    const dx = xT0 - xF;
+                    const dy = yT0 - yF;
+                    const initialDist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (initialDist <= R_eff) { // Already inside target
+                        return { hitTime: arrowDelay, targetHitPos: targetInitialPos, impactPos: targetInitialPos };
+                    }
+                    
+                    const travelDist = initialDist - R_eff;
+                    const travelTime = travelDist / arrowSpeed;
+                    const hitTime = arrowDelay + travelTime;
+                    
+                    // Impact point is on the line from shooter to target, at the edge of the effective radius
+                    const unitDx = dx / initialDist;
+                    const unitDy = dy / initialDist;
+                    const impactX = xT0 - unitDx * R_eff;
+                    const impactY = yT0 - unitDy * R_eff;
+                    
+                    return { hitTime, targetHitPos: targetInitialPos, impactPos: [impactX, impactY] };
+                }
+
+                // --- 原有的移動目標算法 ---
+                let vTx = 0.0, vTy = 0.0;
+                if (n === 1) {
+                    const x_path1 = targetPathData.coords[0][0], y_path1 = targetPathData.coords[0][1];
+                    const moveSpeed = targetPathData.moveSpeed;
+                    const D_segment = Math.sqrt(Math.pow(x_path1 - xT0, 2) + Math.pow(y_path1 - yT0, 2));
+                    if (D_segment > 1e-9) {
+                        vTx = (x_path1 - xT0) / D_segment * moveSpeed;
+                        vTy = (y_path1 - yT0) / D_segment * moveSpeed;
+                    }
+                }
+                const d_initial_x = xT0 - xF, d_initial_y = yT0 - yF;
+                const A = (vTx * vTx + vTy * vTy) - (arrowSpeed * arrowSpeed);
+                const B = 2 * (d_initial_x * vTx + d_initial_y * vTy - arrowSpeed * arrowSpeed * arrowDelay);
+                const C = (d_initial_x * d_initial_x + d_initial_y * d_initial_y) - (arrowSpeed * arrowSpeed * arrowDelay * arrowDelay) - (R_eff * R_eff);
+
+                let hitTimes = [];
+                const EPSILON = 1e-9;
+                if (Math.abs(A) < EPSILON) {
+                    if (Math.abs(B) < EPSILON) return null;
+                    hitTimes.push(-C / B);
+                } else {
+                    const discriminant = B * B - 4 * A * C;
+                    if (discriminant < 0) return null;
+                    hitTimes.push((-B + Math.sqrt(discriminant)) / (2 * A), (-B - Math.sqrt(discriminant)) / (2 * A));
+                }
+                let t_hit = Number.POSITIVE_INFINITY;
+                for (const t of hitTimes) {
+                    if (t > arrowDelay - EPSILON && t >= 0) t_hit = Math.min(t_hit, t);
+                }
+                if (t_hit === Number.POSITIVE_INFINITY) return null;
+
+                const targetHitX = xT0 + vTx * t_hit, targetHitY = yT0 + vTy * t_hit;
+                const D_proj_flight = arrowSpeed * (t_hit - arrowDelay);
+                const dx_final = targetHitX - xF, dy_final = targetHitY - yF;
+                const d_final = Math.sqrt(dx_final * dx_final + dy_final * dy_final);
+                const a = (D_proj_flight**2 - R_eff**2 + d_final**2) / (2 * d_final);
+                const h = Math.sqrt(Math.max(0, D_proj_flight**2 - a**2));
+                const p2x = xF + a * dx_final / d_final, p2y = yF + a * dy_final / d_final;
+                
+                return {
+                    hitTime: t_hit,
+                    targetHitPos: [targetHitX, targetHitY],
+                    impactPos: [p2x + h * dy_final / d_final, p2y - h * dx_final / d_final]
+                };
+            }
+
+            // --- UI 互動邏輯 ---
+            const defaultValues = {};
+            document.querySelectorAll('input[id]').forEach(el => defaultValues[el.id] = el.value);
+
+            movementRadios.forEach(radio => radio.addEventListener('change', (e) => {
+                movementParamsDiv.style.display = e.target.value === '1' ? 'grid' : 'none';
+            }));
+            form.addEventListener('submit', runSimulation);
+            resetButton.addEventListener('click', () => {
+                for(const id in defaultValues) document.getElementById(id).value = defaultValues[id];
+                document.querySelector('input[name="target-movement"][value="0"]').checked = true;
+                movementParamsDiv.style.display = 'none';
+                resultsDiv.className = 'results-info';
+                resultsDiv.textContent = '參數已重設為預設值。';
+                runSimulation();
+            });
+
+            function validateInputs() {
+                const fields = ['fire-x', 'fire-y', 'target-x', 'target-y', 'target-radius', 'arrow-speed', 'arrow-delay', 'arrow-width'];
+                if (document.querySelector('input[name="target-movement"]:checked').value === '1') {
+                    fields.push('target-path-x', 'target-path-y', 'target-speed');
+                }
+                for (const id of fields) {
+                    if(document.getElementById(id).value === '') return `輸入錯誤：欄位 "${document.querySelector(`label[for='${id}']`).textContent}" 不可為空。`;
+                }
+                if (parseFloat(document.getElementById('arrow-speed').value) <= 0) return "輸入錯誤：箭矢速度必須是正數。";
+                return null;
+            }
+            
+            function runSimulation() {
+                const validationError = validateInputs();
+                if (validationError) {
+                    resultsDiv.className = 'results-error';
+                    resultsDiv.textContent = validationError;
+                    clearCanvas(); lastResult = null; return;
+                }
+                const inputs = {
+                    firingPos: [parseFloat(document.getElementById('fire-x').value), parseFloat(document.getElementById('fire-y').value)],
+                    targetInitialPos: [parseFloat(document.getElementById('target-x').value), parseFloat(document.getElementById('target-y').value)],
+                    targetRadius: parseFloat(document.getElementById('target-radius').value),
+                    n: parseInt(document.querySelector('input[name="target-movement"]:checked').value),
+                    arrowSpeed: parseFloat(document.getElementById('arrow-speed').value),
+                    arrowDelay: parseFloat(document.getElementById('arrow-delay').value),
+                    arrowWidth: parseFloat(document.getElementById('arrow-width').value),
+                    targetPathData: { n: parseInt(document.querySelector('input[name="target-movement"]:checked').value) }
+                };
+                if (inputs.targetPathData.n === 1) {
+                    inputs.targetPathData.coords = [[parseFloat(document.getElementById('target-path-x').value), parseFloat(document.getElementById('target-path-y').value)]];
+                    inputs.targetPathData.moveSpeed = parseFloat(document.getElementById('target-speed').value);
+                }
+                lastResult = calculateArrowIntercept(inputs);
+                if (lastResult) {
+                    resultsDiv.className = 'results-success';
+                    resultsDiv.textContent = `命中成功！\n命中時間: ${lastResult.hitTime.toFixed(4)} s\n目標命中座標: [${lastResult.targetHitPos[0].toFixed(2)}, ${lastResult.targetHitPos[1].toFixed(2)}]\n實際撞擊點: [${lastResult.impactPos[0].toFixed(2)}, ${lastResult.impactPos[1].toFixed(2)}]`;
+                    drawVisualization(inputs, lastResult);
+                } else {
+                    resultsDiv.className = 'results-error';
+                    resultsDiv.textContent = '計算失敗：無法命中目標。';
+                    clearCanvas();
+                }
+            }
+            
+            // --- 視覺化與 Tooltip 邏輯 ---
+            function clearCanvas() { ctx.fillStyle = '#0d121c'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+            function drawVisualization(inputs, result) {
+                clearCanvas();
+                sceneObjects = []; // Clear objects for hit testing
+                const computedStyles = window.getComputedStyle(document.body);
+                const colors = {
+                    accent: computedStyles.getPropertyValue('--accent-color').trim(),
+                    error: computedStyles.getPropertyValue('--error-color').trim(),
+                    success: computedStyles.getPropertyValue('--success-color').trim(),
+                    warn: computedStyles.getPropertyValue('--warn-color').trim(),
+                };
+
+                const allPoints = [ inputs.firingPos, inputs.targetInitialPos, result.targetHitPos, result.impactPos ];
+                if(inputs.targetPathData.n === 1) { allPoints.push(inputs.targetPathData.coords[0]); }
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                allPoints.forEach(p => { minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]); minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]); });
+                const padding = Math.max((maxX - minX) * 0.15, (maxY - minY) * 0.15, inputs.targetRadius, 20);
+                minX -= padding; maxX += padding; minY -= padding; maxY += padding;
+                const scale = Math.min(canvas.width / (maxX - minX), canvas.height / (maxY - minY));
+                const toCanvasX = (wx) => (wx - minX) * scale;
+                const toCanvasY = (wy) => canvas.height - (wy - minY) * scale;
+
+                // --- 修正 #2.1: 繪製座標軸與刻度 ---
+                const gridSize = Math.pow(10, Math.floor(Math.log10(Math.max(maxX-minX, maxY-minY) / 5)));
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.1)"; ctx.lineWidth = 0.5; ctx.font = "10px sans-serif";
+                for (let x = Math.floor(minX/gridSize)*gridSize; x < maxX; x += gridSize) {
+                    const cx = toCanvasX(x);
+                    ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, canvas.height); ctx.stroke();
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.4)"; ctx.fillText(x.toFixed(0), cx + 2, toCanvasY(0) - 2);
+                }
+                for (let y = Math.floor(minY/gridSize)*gridSize; y < maxY; y += gridSize) {
+                    const cy = toCanvasY(y);
+                    ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(canvas.width, cy); ctx.stroke();
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.4)"; ctx.fillText(y.toFixed(0), toCanvasX(0) + 2, cy - 2);
+                }
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.3)"; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(toCanvasX(0), 0); ctx.lineTo(toCanvasX(0), canvas.height); ctx.stroke(); // Y-axis
+                ctx.beginPath(); ctx.moveTo(0, toCanvasY(0)); ctx.lineTo(canvas.width, toCanvasY(0)); ctx.stroke(); // X-axis
+
+                // --- 繪製物件 ---
+                const firePosC = {x: toCanvasX(inputs.firingPos[0]), y: toCanvasY(inputs.firingPos[1])};
+                const targetInitialPosC = {x: toCanvasX(inputs.targetInitialPos[0]), y: toCanvasY(inputs.targetInitialPos[1])};
+                const targetHitPosC = {x: toCanvasX(result.targetHitPos[0]), y: toCanvasY(result.targetHitPos[1])};
+                const impactPosC = {x: toCanvasX(result.impactPos[0]), y: toCanvasY(result.impactPos[1])};
+                const targetRadiusC = Math.max(2, inputs.targetRadius * scale);
+
+                if (inputs.targetPathData.n === 1) { // Target Path
+                    ctx.beginPath(); ctx.moveTo(targetInitialPosC.x, targetInitialPosC.y); ctx.lineTo(targetHitPosC.x, targetHitPosC.y);
+                    ctx.strokeStyle = 'rgba(255, 255, 0, 0.5)'; ctx.setLineDash([5, 5]); ctx.lineWidth = 1; ctx.stroke(); ctx.setLineDash([]);
+                }
+                ctx.beginPath(); ctx.moveTo(firePosC.x, firePosC.y); ctx.lineTo(impactPosC.x, impactPosC.y);
+                ctx.strokeStyle = colors.error; ctx.lineWidth = 2; ctx.stroke(); // Arrow Path
+
+                ctx.beginPath(); ctx.arc(targetInitialPosC.x, targetInitialPosC.y, targetRadiusC, 0, 2*Math.PI);
+                ctx.strokeStyle = colors.accent + '80'; ctx.lineWidth = 2; ctx.stroke(); // Target (Start)
+                
+                ctx.beginPath(); ctx.arc(targetHitPosC.x, targetHitPosC.y, targetRadiusC, 0, 2*Math.PI);
+                ctx.fillStyle = colors.accent + '80'; ctx.fill(); ctx.strokeStyle = colors.accent; ctx.stroke(); // Target (Hit)
+
+                ctx.beginPath(); ctx.arc(firePosC.x, firePosC.y, 5, 0, 2*Math.PI);
+                ctx.fillStyle = colors.success; ctx.fill(); // Shooter
+                
+                ctx.beginPath(); ctx.moveTo(impactPosC.x-5, impactPosC.y-5); ctx.lineTo(impactPosC.x+5, impactPosC.y+5);
+                ctx.moveTo(impactPosC.x-5, impactPosC.y+5); ctx.lineTo(impactPosC.x+5, impactPosC.y-5);
+                ctx.strokeStyle = colors.warn; ctx.lineWidth = 2; ctx.stroke(); // Impact Point
+
+                // --- 修正 #2.2: 儲存物件資訊以供 Tooltip 使用 ---
+                sceneObjects.push({
+                    type: 'Shooter', x: firePosC.x, y: firePosC.y, radius: 5,
+                    info: `發射者\n座標: [${inputs.firingPos[0]}, ${inputs.firingPos[1]}]`
+                });
+                sceneObjects.push({
+                    type: 'Target (Start)', x: targetInitialPosC.x, y: targetInitialPosC.y, radius: targetRadiusC,
+                    info: `初始目標\n座標: [${inputs.targetInitialPos[0]}, ${inputs.targetInitialPos[1]}]`
+                });
+                sceneObjects.push({
+                    type: 'Target (Hit)', x: targetHitPosC.x, y: targetHitPosC.y, radius: targetRadiusC,
+                    info: `命中目標 (t=${result.hitTime.toFixed(2)}s)\n座標: [${result.targetHitPos[0].toFixed(2)}, ${result.targetHitPos[1].toFixed(2)}]`
+                });
+            }
+            
+            canvas.addEventListener('mousemove', (e) => {
+                if (!lastResult) return;
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                let foundObject = false;
+                for (const obj of sceneObjects) {
+                    const dist = Math.sqrt((mouseX - obj.x)**2 + (mouseY - obj.y)**2);
+                    if (dist <= obj.radius) {
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = `${e.clientX + 15}px`;
+                        tooltip.style.top = `${e.clientY}px`;
+                        tooltip.textContent = obj.info;
+                        foundObject = true;
+                        break;
+                    }
+                }
+                if (!foundObject) tooltip.style.display = 'none';
+            });
+            canvas.addEventListener('mouseout', () => tooltip.style.display = 'none');
+
+            runSimulation(); // Initial run
+        }
+    </script>
+</body>
+</html>
