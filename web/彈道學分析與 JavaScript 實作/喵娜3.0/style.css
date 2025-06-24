@@ -11,7 +11,8 @@
     --arrow-color: #ffdd00;
     --success-color: #39e600;
     --warning-color: #ff9900;
-    --grid-color: rgba(123, 104, 238, 0.15); /* 新增網格顏色 */
+    --grid-color: rgba(123, 104, 238, 0.15);
+    --axis-color: rgba(123, 104, 238, 0.4);
 }
 
 body {
@@ -132,7 +133,7 @@ button[type="submit"]:hover {
 }
 
 #visualization-canvas {
-    background-color: var(--primary-color); /* 캔버스 배경색 설정 */
+    background-color: var(--primary-color);
     border-radius: 8px;
     border: 1px solid var(--accent-color);
 }
