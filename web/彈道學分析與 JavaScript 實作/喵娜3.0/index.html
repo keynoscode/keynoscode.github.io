@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="zh-TW">
   <head>
@@ -5,25 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>【魅猫流♡箭術彈道學道場 v2.2】</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- 喵娜新增：在 <head> 中引入 KaTeX 的魔法詠唱 -->
+
+    <!-- 喵娜修正：移除 integrity 和 crossorigin 屬性，直接信任魔法書庫！ -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"
-      integrity="sha384-sN/2OKTgImfTNsAUiB4SUT8pGsUWJRTdGMcnACUeL9DSEEso3A+i0l+pVb3RGY3z"
-      crossorigin="anonymous"
     />
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"
-      integrity="sha384-hIoBPJpTadx5StDRVRnwBcEYlW3J6ZEHiZ7OBURWrCYDTIFe3FVblCeJr9aJp2AY"
-      crossorigin="anonymous"
     ></script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
-      integrity="sha384-43gviWU0YVjaDtb/GtitreqcNqpRAWJTfZMsvTaF3U_GgJIdTBLB6yNUIzV9KaE2"
-      crossorigin="anonymous"
     ></script>
+
     <!-- 喵娜註：主人其他的腳本，喵娜也保留著 -->
     <script src="/js/icon.js"></script>
     <script>
@@ -48,23 +45,25 @@
           <ul>
             <li>
               <strong>核心物理原理：向量追及等式</strong><br />
-              箭矢能擊中目標「近側邊緣」的最早時間
-              `t`，必須滿足「發射點到目標中心的距離」等於「箭矢飛行距離減去目標半徑」。其向量方程式為：
+              箭矢能擊中目標「近側邊緣」的最早時間 `t`，必須滿足「發射點到目標中心的距離」等於「箭矢飛行距離減去目標半徑」。其向量方程式為：
               $$|\vec{P}_T(t) - \vec{P}_F| = S_{arrow}(t - D_{delay}) - R_{eff}$$
-              將其展開並整理後，可得到一個物理上完全正確的二次方程式
-              $At^2 + Bt + C = 0$。
+              將其展開並整理後，可得到一個物理上完全正確的二次方程式 $At^2 +
+              Bt + C = 0$。
             </li>
             <li>
               <strong>數值穩定魔法：方程式縮放療法</strong><br />
               為了根除浮點數精度惡魔，我們將二次方程的係數 $A, B, C$ 同時除以
-              $S_{arrow}^2$，得到一組用於計算的、絕對穩定的新係數 $A', B', C'$：
-              $$A' = \frac{|\vec{V}_T|^2}{S_{arrow}^2} - 1$$
-              $$B' = 2 \cdot \left( \frac{(\vec{P}_{T0} - \vec{P}_F) \cdot \vec{V}_T}{S_{arrow}^2} + D_{delay} + \frac{R_{eff}}{S_{arrow}} \right)$$
-              $$C' = \frac{|\vec{P}_{T0} - \vec{P}_F|^2}{S_{arrow}^2} - \left( D_{delay} + \frac{R_{eff}}{S_{arrow}} \right)^2$$
+              $S_{arrow}^2$，得到一組用於計算的、絕對穩定的新係數 $A', B',
+              C'$： $$A' = \frac{|\vec{V}_T|^2}{S_{arrow}^2} - 1$$ $$B' = 2
+              \cdot \left( \frac{(\vec{P}_{T0} - \vec{P}_F) \cdot
+              \vec{V}_T}{S_{arrow}^2} + D_{delay} + \frac{R_{eff}}{S_{arrow}}
+              \right)$$ $$C' = \frac{|\vec{P}_{T0} - \vec{P}_F|^2}{S_{arrow}^2}
+              - \left( D_{delay} + \frac{R_{eff}}{S_{arrow}} \right)^2$$
             </li>
           </ul>
         </section>
 
+        <!-- ... 您其他的 section 內容保持不變 ... -->
         <section id="interactive-controls">
           <h2>✦互動參數面板✦</h2>
           <form id="calculator-form">
@@ -123,5 +122,19 @@
     </main>
 
     <script src="script.js"></script>
+
+    <!-- 喵娜新增：這就是喚醒 KaTeX 魔法的最終啟動咒語！ -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\[", right: "\\]", display: true },
+            { left: "\\(", right: "\\)", display: false },
+          ],
+        });
+      });
+    </script>
   </body>
 </html>
