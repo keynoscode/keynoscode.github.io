@@ -1,0 +1,310 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+    font-family: 'Segoe UI', 'Poppins', 'Microsoft YaHei', system-ui, -apple-system, 'Roboto', sans-serif;
+    padding: 20px;
+    color: #e6e6ff;
+    min-height: 100vh;
+}
+
+.simulator-container {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* 頭部樣式 */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ff66aa;
+    padding-bottom: 15px;
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #ff99cc, #ff66aa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0;
+}
+
+.header p {
+    color: #aaaaff;
+    margin-top: 8px;
+    font-size: 0.9rem;
+}
+
+/* 控制面板 */
+.control-panel {
+    background: rgba(20, 20, 40, 0.7);
+    backdrop-filter: blur(8px);
+    border-radius: 28px;
+    padding: 20px 25px;
+    margin-bottom: 30px;
+    border: 1px solid #ff66aa55;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 130px;
+}
+
+.control-group label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ff99cc;
+    font-weight: bold;
+}
+
+select, input, button {
+    background: #0f0f20;
+    border: 1px solid #664466;
+    border-radius: 40px;
+    padding: 10px 16px;
+    color: #f0f0ff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+select:hover, input:hover, button:hover {
+    border-color: #ff88bb;
+    box-shadow: 0 0 6px #ff66aa80;
+}
+
+button {
+    background: linear-gradient(95deg, #ff66aa, #cc3388);
+    border: none;
+    font-weight: bold;
+    padding: 10px 24px;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+#exportBtn {
+    background: linear-gradient(95deg, #3366aa, #224488);
+}
+
+.stat-badge {
+    background: #00000055;
+    border-radius: 40px;
+    padding: 8px 18px;
+    font-size: 0.75rem;
+    font-family: monospace;
+}
+
+/* 三圖表行 */
+.charts-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.chart-card {
+    flex: 1;
+    min-width: 250px;
+    background: rgba(10, 10, 25, 0.7);
+    backdrop-filter: blur(4px);
+    border-radius: 28px;
+    padding: 15px;
+    border: 1px solid #3c2a3e;
+}
+
+.chart-card .card-title {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    border-left: 4px solid #ff66aa;
+    padding-left: 12px;
+}
+
+canvas {
+    max-height: 200px;
+    width: 100%;
+}
+
+/* 主要內容區 */
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.simulation-panel {
+    flex: 2;
+    min-width: 280px;
+}
+
+.stats-panel {
+    flex: 1.2;
+    min-width: 260px;
+}
+
+.card {
+    background: rgba(10, 10, 25, 0.7);
+    backdrop-filter: blur(4px);
+    border-radius: 28px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid #3c2a3e;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    border-left: 5px solid #ff66aa;
+    padding-left: 14px;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.metric {
+    background: #00000033;
+    border-radius: 20px;
+    padding: 12px;
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffcc88;
+}
+
+.metric-label {
+    font-size: 0.65rem;
+    color: #aaaaff;
+    margin-top: 5px;
+}
+
+.positive {
+    color: #88ffaa;
+}
+
+.negative {
+    color: #ff8888;
+}
+
+/* 表格樣式 */
+.log-table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 0.7rem;
+}
+
+.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: monospace;
+}
+
+.log-table th, .log-table td {
+    padding: 6px 8px;
+    text-align: center;
+    border-bottom: 1px solid #2a2a44;
+}
+
+.log-table th {
+    background: #1e1e3a;
+    position: sticky;
+    top: 0;
+    color: #ffbbdd;
+}
+
+.win-row {
+    background: #22662233;
+}
+
+.lose-row {
+    background: #88222233;
+}
+
+.push-row {
+    background: #44444433;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.65rem;
+    margin-top: 30px;
+    color: #6666aa;
+    line-height: 1.5;
+}
+
+/* 響應式設計 */
+@media (max-width: 780px) {
+    body {
+        padding: 12px;
+    }
+    
+    .control-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .metric-value {
+        font-size: 1.1rem;
+    }
+    
+    .card-title {
+        font-size: 1rem;
+    }
+    
+    .charts-row {
+        flex-direction: column;
+    }
+    
+    .chart-card {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .control-group {
+        min-width: 100%;
+    }
+    
+    .result-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* 滾動條美化 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a2e;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ff66aa;
+    border-radius: 10px;
+}
