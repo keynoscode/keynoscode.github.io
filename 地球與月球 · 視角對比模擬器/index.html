@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>地球與月球 · 視角對比模擬器</title>
+
+    <style>
+        /* ─── 全局重置與字體 ─── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #0b0d12;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            background: #141820;
+            border-radius: 28px;
+            padding: 32px 36px 40px;
+            max-width: 1000px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 1px solid #2a3040;
+        }
+
+        h1 {
+            color: #e8edf5;
+            font-weight: 400;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 small {
+            color: #6a7a90;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            color: #5a6a80;
+            font-size: 14px;
+            border-bottom: 1px solid #1e2635;
+            padding-bottom: 18px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .subtitle .badge {
+            background: #1e2a3a;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            color: #8a9ab0;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── Canvas 包裝 ─── */
+        .canvas-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #0a0e14;
+            border-radius: 18px;
+            padding: 20px 18px 14px;
+            border: 1px solid #1e2635;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 900 / 480;
+            background: #06080c;
+            border-radius: 12px;
+            cursor: default;
+        }
+
+        /* ─── 控制列 ─── */
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            padding: 0 8px;
+            width: 100%;
+        }
+
+        .controls label {
+            color: #8a9ab0;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1 1 280px;
+        }
+
+        .controls input[type="range"] {
+            flex: 1;
+            min-width: 120px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #1e2a3a;
+            border-radius: 4px;
+            outline: none;
+            transition: background 0.2s;
+        }
+
+        .controls input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4a8af4;
+            cursor: pointer;
+            border: 2px solid #0b0d12;
+            box-shadow: 0 0 12px rgba(74, 138, 244, 0.3);
+            transition: 0.15s;
+        }
+
+        .controls input[type="range"]::-webkit-slider-thumb:hover {
+            background: #5a9af4;
+            transform: scale(1.12);
+        }
+
+        .controls input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4a8af4;
+            cursor: pointer;
+            border: 2px solid #0b0d12;
+        }
+
+        .controls .value-display {
+            color: #c8d8f0;
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 60px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ─── 圖例 ─── */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+            padding: 0 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #aab8d0;
+            font-size: 13px;
+        }
+
+        .legend-item .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-item .dot.moon {
+            background: #b8c8e0;
+            box-shadow: 0 0 10px rgba(184, 200, 224, 0.2);
+        }
+        .legend-item .dot.earth {
+            background: #3a9eff;
+            box-shadow: 0 0 14px rgba(58, 158, 255, 0.25);
+        }
+        .legend-item .dot.fov {
+            background: transparent;
+            border: 1px dashed #3a4a5a;
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ─── 響應式 ─── */
+        @media (max-width: 640px) {
+            .container {
+                padding: 18px 14px 28px;
+            }
+            h1 {
+                font-size: 18px;
+                flex-wrap: wrap;
+            }
+            .subtitle {
+                font-size: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .controls label {
+                font-size: 12px;
+                gap: 10px;
+            }
+            .legend {
+                gap: 18px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>
+            🌍 ⇄ 🌙 視角對比
+            <small>地球 vs 月球 · 真實比例模擬</small>
+        </h1>
+
+        <div class="subtitle">
+            <span>從天體表面觀測對方在視野中的大小</span>
+            <span class="badge">✦ 可拖曳滑塊調整距離</span>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="canvas" width="900" height="480"></canvas>
+
+            <div class="controls">
+                <label>
+                    <span style="min-width:50px;">距離</span>
+                    <input type="range" id="distSlider" min="0.3" max="3.0" step="0.01" value="1.0" />
+                    <span class="value-display" id="distLabel">1.00×</span>
+                </label>
+            </div>
+
+            <div class="legend">
+                <span class="legend-item">
+                    <span class="dot moon"></span> 月球 (視角 0.52°)
+                </span>
+                <span class="legend-item">
+                    <span class="dot earth"></span> 地球 (視角 1.90°)
+                </span>
+                <span class="legend-item">
+                    <span class="dot fov"></span> 人類視野範圍 (120°×90°)
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /**
+         * ============================================================
+         *  模組：天體視角模擬器 (Celestial View Simulator)
+         *  版本：1.0.0
+         *  描述：以 Canvas 繪製從地球看月球、與從月球看地球的
+         *        視角對比，支援距離縮放，所有數值即時更新。
+         *  作者：魅猫 喵娜 · 為主人量身打造
+         * ============================================================
+         */
+
+        (function() {
+            'use strict';
+
+            // ─── DOM 參照 ───
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const slider = document.getElementById('distSlider');
+            const distLabel = document.getElementById('distLabel');
+
+            // ─── 固定天文常數 (單位：公里) ───
+            const CONST = {
+                MOON_RADIUS: 1737,
+                EARTH_RADIUS: 6371,
+                BASE_DISTANCE: 384400, // 地月平均距離
+            };
+
+            // ─── 繪圖參數 ───
+            const VIEW_ANGLE_H = 120; // 水平視野 (度)
+            const VIEW_ANGLE_V = 90; // 垂直視野 (度)
+
+            // Canvas 邏輯尺寸 (固定，與 CSS aspect-ratio 匹配)
+            const CW = 900;
+            const CH = 480;
+
+            // ─── 計算視角與面積佔比 ───
+
+            /**
+             * 計算天體視角 (度)
+             * θ = 2 * arctan(R / d)
+             */
+            function calcAngularDiameter(radiusKm, distanceKm) {
+                if (distanceKm <= 0) return 0;
+                const rad = 2 * Math.atan(radiusKm / distanceKm);
+                return rad * (180 / Math.PI);
+            }
+
+            /**
+             * 計算天體在整個天空球面中的面積佔比 (%)
+             * Ω ≈ π(R/d)²  佔比 = Ω / (4π) * 100
+             */
+            function calcAreaPercent(radiusKm, distanceKm) {
+                if (distanceKm <= 0) return 0;
+                const solidAngle = Math.PI * Math.pow(radiusKm / distanceKm, 2);
+                return (solidAngle / (4 * Math.PI)) * 100;
+            }
+
+            /**
+             * 將視角 (度) 轉換為 Canvas 上的繪製半徑 (px)
+             * 以人類視野範圍 (120°×90°) 為基準，
+             * 用水平視野寬度來映射：視角佔水平視野的比例 × canvas寬度/2
+             */
+            function angularToPixel(angularDeg, canvasWidth) {
+                // 在 120° 視野中，該天體佔據的水平寬度比例
+                const ratio = angularDeg / VIEW_ANGLE_H;
+                // 半徑 = 比例 × canvas 半寬
+                return ratio * (canvasWidth / 2);
+            }
+
+            // ─── 繪圖主函式 ───
+
+            function render(distanceMultiplier) {
+                const dist = CONST.BASE_DISTANCE * distanceMultiplier;
+
+                // 計算真實數據
+                const moonAngle = calcAngularDiameter(CONST.MOON_RADIUS, dist);
+                const earthAngle = calcAngularDiameter(CONST.EARTH_RADIUS, dist);
+                const moonArea = calcAreaPercent(CONST.MOON_RADIUS, dist);
+                const earthArea = calcAreaPercent(CONST.EARTH_RADIUS, dist);
+
+                // 像素半徑 (以水平視野為基準)
+                const moonPx = angularToPixel(moonAngle, CW);
+                const earthPx = angularToPixel(earthAngle, CW);
+
+                // ── 清除畫面 ──
+                ctx.clearRect(0, 0, CW, CH);
+
+                // ── 背景微光 ──
+                const grad = ctx.createRadialGradient(CW / 2, CH / 2, 50, CW / 2, CH / 2, 450);
+                grad.addColorStop(0, '#0e141e');
+                grad.addColorStop(1, '#06080c');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, CW, CH);
+
+                // ── 繪製座標格線 (很淡的參考線) ──
+                ctx.save();
+                ctx.strokeStyle = '#1a2230';
+                ctx.lineWidth = 0.5;
+                ctx.setLineDash([3, 6]);
+                // 水平中線
+                ctx.beginPath();
+                ctx.moveTo(0, CH / 2);
+                ctx.lineTo(CW, CH / 2);
+                ctx.stroke();
+                // 垂直中線 (兩側各一條)
+                for (let x of [CW * 0.25, CW * 0.75]) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 40);
+                    ctx.lineTo(x, CH - 40);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                // ── 繪製「人類視野範圍」參考框 ──
+                ctx.save();
+                ctx.strokeStyle = '#2a3a4a';
+                ctx.lineWidth = 0.8;
+                ctx.setLineDash([4, 6]);
+                const margin = 40;
+                ctx.strokeRect(margin, margin, CW - margin * 2, CH - margin * 2);
+                ctx.restore();
+
+                // ── 標籤：視野範圍 ──
+                ctx.save();
+                ctx.fillStyle = '#3a4a5a';
+                ctx.font = '11px "Segoe UI", sans-serif';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+                ctx.fillText('人類視野範圍 (120° × 90°)', 44, 44);
+                ctx.restore();
+
+                // ── 計算兩個天體的位置 ──
+                const centerX1 = CW * 0.25;
+                const centerX2 = CW * 0.75;
+                const centerY = CH / 2;
+
+                // ── 繪製月球 (左) ──
+                drawCelestialBody(
+                    ctx,
+                    centerX1, centerY,
+                    moonPx,
+                    '#b8c8e0',
+                    '#8aa0b8',
+                    '月球',
+                    `視角 ${moonAngle.toFixed(3)}°`,
+                    `面積佔比 ${moonArea.toFixed(4)}%`,
+                    true // 是否顯示數值
+                );
+
+                // ── 繪製地球 (右) ──
+                drawCelestialBody(
+                    ctx,
+                    centerX2, centerY,
+                    earthPx,
+                    '#3a9eff',
+                    '#1a6ec0',
+                    '地球',
+                    `視角 ${earthAngle.toFixed(3)}°`,
+                    `面積佔比 ${earthArea.toFixed(4)}%`,
+                    true
+                );
+
+                // ── 顯示距離資訊 ──
+                ctx.save();
+                ctx.fillStyle = '#6a7a90';
+                ctx.font = '12px "Segoe UI", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                const distKm = (dist / 1000).toFixed(0);
+                ctx.fillText(
+                    `距離 ${distKm} 千公里  (${(distanceMultiplier * 100).toFixed(0)}% 基準距離)`,
+                    CW / 2,
+                    CH - 10
+                );
+                ctx.restore();
+
+                // ── 更新滑塊旁數值 ──
+                distLabel.textContent = distanceMultiplier.toFixed(2) + '×';
+            }
+
+            // ─── 輔助繪圖：繪製單一天體 ───
+
+            function drawCelestialBody(ctx, x, y, radiusPx, colorLight, colorDark, label, angleText, areaText, showDetails) {
+                if (radiusPx < 0.1) {
+                    // 太小就不畫了，但顯示文字提示
+                    ctx.save();
+                    ctx.fillStyle = '#5a6a80';
+                    ctx.font = '12px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('太小了⋯', x, y);
+                    ctx.restore();
+                    return;
+                }
+
+                // ── 光暈 (glow) ──
+                const glow = ctx.createRadialGradient(x, y, radiusPx * 0.3, x, y, radiusPx * 2.2);
+                glow.addColorStop(0, colorLight + '30');
+                glow.addColorStop(1, colorLight + '00');
+                ctx.fillStyle = glow;
+                ctx.beginPath();
+                ctx.arc(x, y, radiusPx * 2.2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // ── 本體 (漸層球體) ──
+                const grad = ctx.createRadialGradient(
+                    x - radiusPx * 0.25, y - radiusPx * 0.3, radiusPx * 0.05,
+                    x, y, radiusPx
+                );
+                grad.addColorStop(0, colorLight);
+                grad.addColorStop(0.6, colorLight);
+                grad.addColorStop(1, colorDark);
+
+                ctx.shadowColor = colorLight + '60';
+                ctx.shadowBlur = 30;
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(x, y, radiusPx, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // ── 高光 (specular) ──
+                ctx.save();
+                const hl = ctx.createRadialGradient(
+                    x - radiusPx * 0.3, y - radiusPx * 0.35, radiusPx * 0.02,
+                    x - radiusPx * 0.3, y - radiusPx * 0.35, radiusPx * 0.5
+                );
+                hl.addColorStop(0, '#ffffffb0');
+                hl.addColorStop(1, '#ffffff00');
+                ctx.fillStyle = hl;
+                ctx.beginPath();
+                ctx.arc(x, y, radiusPx, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // ── 標籤 (天體名稱) ──
+                ctx.save();
+                ctx.fillStyle = '#e8edf5';
+                ctx.font = '600 15px "Segoe UI", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.shadowColor = '#00000080';
+                ctx.shadowBlur = 8;
+                ctx.fillText(label, x, y - radiusPx - 16);
+                ctx.restore();
+
+                // ── 詳細數值 ──
+                if (showDetails) {
+                    ctx.save();
+                    ctx.fillStyle = '#8a9ab0';
+                    ctx.font = '12px "Segoe UI", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'top';
+                    ctx.shadowColor = '#00000080';
+                    ctx.shadowBlur = 6;
+                    ctx.fillText(angleText, x, y + radiusPx + 12);
+                    ctx.fillText(areaText, x, y + radiusPx + 30);
+                    ctx.restore();
+                }
+            }
+
+            // ─── 事件綁定 ───
+
+            slider.addEventListener('input', function() {
+                const val = parseFloat(this.value);
+                render(val);
+            });
+
+            // ─── 初始渲染 ───
+            render(1.0);
+
+            // ─── 暴露重繪函數 (方便除錯/擴充) ───
+            window.__renderView = render;
+
+        })();
+    </script>
+
+</body>
+</html>
